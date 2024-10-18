@@ -1,0 +1,30 @@
+.selectorsMain{
+
+    width: 400px;
+    border-top-style: none;
+    border-right: none;
+    border-left: none;
+    border-radius: 0;
+}
+
+.input_NewPost{
+
+    height: 60px;
+    width: 100%;
+    background: #ffff;
+    border: 0;
+}
+
+.newPostInput_Div{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.newPostButtom_Div{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
