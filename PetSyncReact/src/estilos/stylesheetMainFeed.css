@@ -6,13 +6,22 @@
     border-left: none;
     border-radius: 0;
 }
+.selectorsMainRadiusBtn{
+
+    width: 800px;
+}
 
 .input_NewPost{
 
-    height: 60px;
-    width: 100%;
-    background: #ffff;
+    margin-right: 4rem;
     border: 0;
+    color:black;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, .0);
+}
+
+textarea#exampleTextarea:focus {
+
+    box-shadow: none;
 }
 
 .newPostInput_Div{
@@ -27,4 +36,124 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+}
+
+.iconClipz{
+
+    color: black;
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.iconsSmall{
+
+    color: black;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+.background_icons{
+
+    background: white;
+    padding: 0
+}
+
+.topPost{
+
+    display: flex;
+    flex-direction: row;
+}
+
+.namesPost{
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 3%;
+    font-size: 14px;
+    
+}
+
+.iconsPostmargin{
+    margin: 0 10px 0 0;
+}
+
+.dotsClass{
+
+    margin-left: auto;
+    
+
+}
+
+.postTextContent{
+    text-align: justify;
+    color: black;
+    font-size: 14px;
+    margin: 10px 0 10px 0;
+}
+
+.postImageContent{
+
+    margin: 15px 0 15px 0;
+}
+
+.optionsPosts{
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.modal {
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    max-width: 90%;
+    max-height: 90%;
+  }
+  
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #bbb;
+  }
+
+.btn.btn-outline-primary {
+    color: #f4bd61;
+    border-color: #f4bd61;
+}
+
+.btn.btn-outline-primary:hover {
+    color: #f4bd61;
+    border-color: #f4bd61;
+}
+
+.btn-check:checked+.btn {
+    background: #f4bd61;
+    border-color: #f4bd61;
+}
+
+.btn-check:checked+.btn:hover {
+    background: #f4bd61;
+    color: white;
+    border-color: #f4bd61;
 }
