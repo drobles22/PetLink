@@ -1,6 +1,8 @@
-import React from 'react'
-import { MainFeed } from '../MainPage/MainFeed'
+
 import "../../estilos/profile.css"
+import { Post } from '../MainPage/Post'
+import { Posts } from "../../DummyData";
+
 
 export const Profile = () => {
   return (
@@ -46,10 +48,12 @@ export const Profile = () => {
               <div></div>
 
           </div>
+          {Posts.map((p) =>(
+
+<Post key={p.id} post={p}></Post>
+))}
         </div>
-        <div className="profileRightBottom">
-          <MainFeed />
-        </div>
+        
       </div>
     </div>
   </>

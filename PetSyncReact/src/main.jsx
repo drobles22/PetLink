@@ -12,7 +12,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
 
  <MainFeed></MainFeed>
-   {/*<Profile></Profile>*/}
+   <Profile></Profile>
 
   </StrictMode>,
 )
