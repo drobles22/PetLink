@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 
+
 export const MainFeed = () => {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,7 @@ export const MainFeed = () => {
     <div className="container">
 
 
-    {/*<div>
+    {/*<div>  
       <button className="btn btn-outline-warning btn-lg selectorsMain">Para ti</button>
       <button className="btn btn-outline-warning btn-lg selectorsMain">Siguiendo</button>
     </div>*/}
