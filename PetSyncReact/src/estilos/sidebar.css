@@ -10,7 +10,7 @@
   width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+  background-color: #f4bd61;
 }
 ::-webkit-scrollbar-thumb {
   background-color: rgb(179, 179, 179);
@@ -54,4 +54,26 @@
   list-style: none;
 }
 
+@media(min-width:601px) and (max-width: 900px){/*tablets*/
+  main{
+      flex-direction: row;
+      flex-wrap: wrap;
+  }
+  aside,section{
+      flex: 1 1 100%;
+  }
+}
+
+@media(min-width:901px) and (max-width: 1200px){/*laptop*/
+  main{
+      flex-direction: row;
+      flex-wrap: nowrap;
+  }
+  aside{
+      flex: 1;
+  }
+  section{
+      flex: 2;
+  }
+}
 
