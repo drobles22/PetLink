@@ -1,9 +1,22 @@
+h1{
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+form{
+  text-align: center;
+  margin: 10px;
+}
 .sidebar {
   flex: 3;
   height: calc(100vh - 50px);
   overflow-y: scroll;
   position: sticky;
   top: 50px;
+}
+.sidebarPerfil{
+  text-align: center;
+  bottom:0px;
+  right:0px;
 }
 
 ::-webkit-scrollbar {

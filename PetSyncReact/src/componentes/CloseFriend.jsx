@@ -1,4 +1,4 @@
-import "../../estilos/closeFriend.css";
+import "../estilos/closeFriend.css";
 
 export default function CloseFriend({user}) {
   return (
