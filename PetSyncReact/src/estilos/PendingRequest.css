@@ -1,0 +1,74 @@
+.pending-requests-list {
+    padding: 20px;
+  }
+  
+  .pending-requests-list h2 {
+    margin-bottom: 10px;
+    font-size: 18px; 
+  }
+  
+  .title-divider {
+    margin-bottom: 20px;
+  }
+  
+  .pending-requests-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .request-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd; 
+  }
+  
+  .request-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .request-info {
+    flex-grow: 1;
+  }
+  
+  .request-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .confirm-button {
+    background-color: #f4bd61;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: #111111;
+  }
+  
+  .delete-button {
+    background-color: white;
+    border: 1px solid #f4bd61; 
+    padding: 5px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: #111111;
+    background-color: #FFFFFF;
+  }
+  
+  .ver-mas-button {
+    display: block;
+    margin: 20px auto 0;
+    color: #f4bd61; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .ver-mas-button:hover {
+    text-decoration: underline;
+  }

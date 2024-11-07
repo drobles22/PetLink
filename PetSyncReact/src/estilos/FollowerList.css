@@ -1,0 +1,47 @@
+.followers-list {
+    padding: 20px;
+  }
+  
+  .followers-list h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #000000;
+  }
+  
+  .title-divider {
+    margin-bottom: 20px;
+  }
+  
+  .followers-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .follower-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .follower-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .ver-mas-button {
+    display: block;
+    margin: 20px auto 0;
+    color: #f4bd61;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .ver-mas-button:hover {
+    text-decoration: underline;
+  }
