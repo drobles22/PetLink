@@ -6,12 +6,16 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { MainFeed } from './componentes/MainPage/MainFeed.jsx'
 import "../src/estilos/stylesheetMainFeed.css"
 import { Profile } from './componentes/ProfilePage/Profile.jsx';
-
-
+import Sidebar from './componentes/Sidebar.jsx';
+import Rightbar from './componentes/Rightbar.jsx';
+import "./estilos/homeContainer.css"
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-
- <MainFeed></MainFeed>
+    <div className='homeContainer'>
+    <Sidebar></Sidebar>
+    <MainFeed></MainFeed>
+    <Rightbar></Rightbar>
+    </div>
    <Profile></Profile>
 
   </StrictMode>,

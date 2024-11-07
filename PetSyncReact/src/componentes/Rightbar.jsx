@@ -1,5 +1,5 @@
 import "../estilos/rightbar.css";
-import { Users } from "../dummyData";
+import { Users } from "../DummyData";
 import Online from "../componentes/Online";
 
 export default function Rightbar({ profile }) {
@@ -7,22 +7,13 @@ export default function Rightbar({ profile }) {
     return (
       <>
         <div className="birthdayContainer">
-          <img className="birthdayImg" src="assets/gift.png" alt="" />
+          <img className="birthdayImg" src="../../public/testAssest/Person/person1.jpg" alt="" />
           <span className="birthdayText">
             <b>Carlos Foster</b> y <b>Otros 3 amigos</b> Cumplen años hoy.
           </span>
         </div>
-      </>
-    );
-  };
-
-  const ProfileRightbar = () => {
-    return (
-      <>
         <h4 className="rightbarTitle">Amigos Conectados</h4>
-
-        <h4 className="rightbarTitle">Online Friends</h4>
-        <ul className="rightbarFriendList">
+          <ul className="rightbarFriendList">
           {Users.map((u) => (
             <Online key={u.id} user={u} />
           ))}
@@ -31,7 +22,7 @@ export default function Rightbar({ profile }) {
         <div className="rightbarFollowings">
           <div className="rightbarFollowing">
             <img
-              src="assets/person/1.jpeg"
+              src="../../public/testAssest/Person/person1.jpg"
               alt=""
               className="rightbarFollowingImg"
             />
@@ -39,21 +30,29 @@ export default function Rightbar({ profile }) {
           </div>
           <div className="rightbarFollowing">
             <img
-              src="assets/person/2.jpeg"
+              src="../../public/testAssest/Person/person2.jpg"
               alt=""
               className="rightbarFollowingImg"
             />
-            <span className="rightbarFollowingName">John Carter</span>
+            <span className="rightbarFollowingName">Daniel Vet </span>
           </div>
           <div className="rightbarFollowing">
             <img
-              src="assets/person/3.jpeg"
+              src="../../public/testAssest/Person/person3.jpg"
               alt=""
               className="rightbarFollowingImg"
             />
-            <span className="rightbarFollowingName">John Carter</span>
+            <span className="rightbarFollowingName">Valeria F. </span>
           </div>
         </div>
+
+      </>
+    );
+  };
+
+  const ProfileRightbar = () => {
+    return (
+      <>
       </>
     );
   };

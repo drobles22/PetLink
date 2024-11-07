@@ -22,11 +22,11 @@ export default function Sidebar() {
         <ul className="sidebarList">
           <li className="sidebarListItem">
             <Home className="sidebarIcon" />
-            <span className="sidebarListItemText">Inicio</span>
+            <a href="../main.jsx" className="sidebarListItemText">Inicio</a>
           </li>
           <li className="sidebarListItem">
             <Chat className="sidebarIcon" />
-            <span className="sidebarListItemText">Perfil</span>
+            <span className="sidebarListItemText">Perfiles</span>
           </li>
           <li className="sidebarListItem">
             <Group className="sidebarIcon" />
@@ -44,8 +44,8 @@ export default function Sidebar() {
         <hr className="sidebarHr" />
 
         <div className="sidebarPerfil">
-        <AccountCircle className="sidebarIcon" />
-        <h4 className="sidebarTitle">Perfil</h4>
+        <AccountCircle className="sidebarImage" />
+        <a href="./ProfilePage/Profile.jsx">Perfil</a>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Pais:</span>
@@ -57,11 +57,10 @@ export default function Sidebar() {
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Estado Civil:</span>
-            <span className="rightbarInfoValue">Soltero</span>
+            <span className="rightbarInfoValue">Soltera</span>
           </div>
         </div>
         </div>
-
       </div>
     </div>
     </>

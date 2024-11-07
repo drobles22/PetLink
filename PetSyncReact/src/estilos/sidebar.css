@@ -19,6 +19,14 @@ form{
   right:0px;
 }
 
+.sidebarImage{
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+
 ::-webkit-scrollbar {
   width: 5px;
 }
