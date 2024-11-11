@@ -2,7 +2,9 @@
 import "../../estilos/profile.css"
 import { Post } from '../MainPage/Post'
 import { Posts } from "../../DummyData";
-
+import { FollowersList } from '../FollowersList/FollowersList';
+import { PendingRequestsList } from "../FollowersList/PendingRequestList";
+import { RecommendedAccountsList } from "../FollowersList/RecommendedAccounts";
 
 export const Profile = () => {
   return (
@@ -53,7 +55,9 @@ export const Profile = () => {
 <Post key={p.id} post={p}></Post>
 ))}
         </div>
-        
+        <FollowersList /> 
+        <PendingRequestsList />
+        <RecommendedAccountsList />
       </div>
     </div>
   </>
