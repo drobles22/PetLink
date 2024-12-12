@@ -1,12 +1,58 @@
 
 import "../../estilos/profile.css"
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Post } from '../MainPage/Post'
 import { Posts } from "../../DummyData";
 import { FollowersList } from '../FollowersList/FollowersList';
 import { PendingRequestsList } from "../FollowersList/PendingRequestList";
 import { RecommendedAccountsList } from "../FollowersList/RecommendedAccounts";
+import { MainFeed } from "../MainPage/MainFeed";
+import { useParams } from "react-router";
 
 export const Profile = () => {
+
+  
+
+  const [user, setUser] = useState({})
+  const [postCount, setPostCount] = useState(0); 
+
+  const Username = useParams().username
+
+
+  const PF = "/"
+
+
+  useEffect(() => {
+    const fetchPostCount = async () => {
+      try {
+        const response = await axios.get(`/api/posts/profile/${Username}`);
+        setPostCount(response.data.length); 
+      } catch (error) {
+        console.error('Error al obtener las publicaciones:', error);
+      }
+    };
+    fetchPostCount();
+  }, [Username]);
+  
+
+
+  useEffect(() => {
+
+    const fetchUser = async ()=>{
+
+      const response = await axios.get(`/api/users?username=${Username}`);
+     
+      setUser(response.data);
+   
+
+    }
+    fetchUser();
+
+  }, [Username])
+  
+
+
   return (
     <>
     
@@ -16,48 +62,42 @@ export const Profile = () => {
           <div className="profileCover">
             <img
               className="profileCoverImg"
-              src="/public/testAssest/Post/post4.jpg"
+              src={user.coverPic || PF + "personProfile/coverpic.png"}
               alt=""
             />
             <img
               className="profileUserImg"
-              src="/public/testAssest/Person/person2.jpg"
+              src={user.profilePicture || PF + "personProfile/defaultUser.jpg"}
               alt=""
             />
           </div>
           <div className="profileInfo">
-              <h4 className="profileInfoName">Valeria F. OlimpoShelter</h4>
-              <h6>@usernameOlimpoS</h6>
-              <h6>Costa Rica</h6>  
+              <h4 className="profileInfoName">{user.name}</h4>
+              <h6>@{user.username}</h6>
+              <h6>{user.country}</h6>  
               <div className='followersContainer'>
                 <div className="div followersInfo">
-                    <strong><span>15</span></strong>
+                    <strong><span>{postCount}</span></strong>
                     <span>publicaciones</span>
                 </div>
                 <div className="div followersInfo">
-                    <strong><span>100</span></strong>
+                    <strong><span>{user.followers ? user.followers.length : 0}</span></strong>
                     <span>seguidores</span>
                 </div>
                 <div className="div followersInfo">
-                    <strong><span>95</span></strong>
+                    <strong><span>{user.followings ? user.followings.length : 0}</span></strong>
                     <span>seguidos</span>
                 </div>
               </div>
               <span><strong>Acerca de: </strong></span>
-              <span className="profileInfoDesc">Hello my friends!</span>
+              <span className="profileInfoDesc">{user.descr}</span>
               <br />
               <span><strong>Informacion </strong></span>
               <div></div>
 
           </div>
-          {Posts.map((p) =>(
-
-<Post key={p.id} post={p}></Post>
-))}
+          <MainFeed username={Username}></MainFeed>
         </div>
-        <FollowersList /> 
-        <PendingRequestsList />
-        <RecommendedAccountsList />
       </div>
     </div>
   </>

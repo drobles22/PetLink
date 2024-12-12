@@ -18,14 +18,16 @@
 .selectorsMainRadiusBtn{
 
     width: 800px;
+    margin-top: 15px;
+
 }
 
 .input_NewPost{
 
     margin-right: 4rem;
-    border: 0;
-    color:black;
-    box-shadow: 0 0px 0px rgba(0, 0, 0, .0);
+    border: 0 !important;
+    color:black !important;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, .0) !important;
 }
 
 textarea#exampleTextarea:focus {
@@ -148,8 +150,8 @@ textarea#exampleTextarea:focus {
   }
 
 .btn.btn-outline-primary {
-    color: #f4bd61;
-    border-color: #f4bd61;
+    color: #f4bd61 !important;
+    border-color: #f4bd61 !important;
 }
 
 .btn.btn-outline-primary:hover {
@@ -158,8 +160,8 @@ textarea#exampleTextarea:focus {
 }
 
 .btn-check:checked+.btn {
-    background: #f4bd61;
-    border-color: #f4bd61;
+    background: #f4bd61 !important;
+    border-color: #f4bd61 !important;
 }
 
 .btn-check:checked+.btn:hover {

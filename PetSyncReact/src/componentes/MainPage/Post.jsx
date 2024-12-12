@@ -1,17 +1,46 @@
-import React from 'react'
 import "../../estilos/Post.css"
 import PropTypes from 'prop-types'; 
-import { Users } from '../../DummyData';
-import { useState } from 'react';
+import { useState,useEffect} from 'react';
+import axios from "axios";
+import {format} from "timeago.js"
+import { Link } from "react-router-dom";
 export const Post = ({post}) => {
 
   
-  const [like,setLike] = useState(post.like)
+  const [like,setLike] = useState(post.likes.length)
   const [isLiked,setIsLiked] = useState(false)
 
     
-  const [share,setShare] = useState(post.share)
+  const [share,setShare] = useState(post.shares.length)
   const [IsShare,setIsShare] = useState(false)
+
+  const [user,setUser] = useState({})
+
+  const PF = "/"
+
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!post.userId) {
+        console.error("post.userId is undefined");
+        return;
+      }
+  
+      console.log(`Fetching user with ID: ${post.userId}`);
+      console.log("User ID:", post.userId);
+
+  
+      try {
+        const response = await axios.get(`/api/users?userId=${post.userId}`);
+        console.log("User data fetched:", response.data);
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+  
+    fetchUser();
+  }, [post.userId]);
 
 
   const likeHandler =()=>{
@@ -23,23 +52,35 @@ export const Post = ({post}) => {
     setShare(IsShare ? share-1 : share+1)
     setIsShare(!IsShare)
   }
+
     return (
         <div className="post">
           <div className="postWrapper">
             <div className="postTop">
               <div className="postTopLeft">
-                
-                <img className='postProfileImg' src={Users.filter((u) => u.id === post?.userId)[0].profilePicture} alt="" />
-                <span className="postUsername">{Users.filter((u) => u.id === post?.userId)[0].username}</span>
-                <span className="postDate">{post?.date}</span>
+              <Link to={`/profile/${user.username}`}>
+              
+              <img
+  className="postProfileImg"
+  src={user.profilePicture !== "" && user.profilePicture !== null 
+      ? PF + user.profilePicture 
+      : PF + "personProfile/defaultUser.jpg"
+  }
+  alt=""
+/>
+            </Link>
+               
+                <span className="postUsername">{user.name}</span>
+                <span className="postUsername">{user?.username || 'Unknown User'}</span>
+                <span className="postDate">{format(post.createdAt)}</span>
               </div>
               <div className="postTopRight">
               <i className="bi bi-three-dots-vertical iconsSmall"></i>
               </div>
             </div>
             <div className="postCenter">
-              <span className="postText">{post.desc}</span>
-              <img className="postImg postImg" src={post.photo}  alt="" />
+              <span className="postText">{post?.postdesc}</span>
+              <img className="postImg postImg" src={PF + ""+ post.attachment}  alt="" />
             </div>
             <div className="postBottom">
               <div className="postBottomLeft postLikeCounter">
@@ -62,12 +103,12 @@ export const Post = ({post}) => {
 
 Post.propTypes = {
   post: PropTypes.shape({
-    userId: PropTypes.number,
-    date: PropTypes.string.isRequired,
-    desc: PropTypes.string,
-    photo: PropTypes.string,
-    like: PropTypes.number,
+    userId: PropTypes.string,
+    date: PropTypes.string,
+    postdesc: PropTypes.string,
+    attachment: PropTypes.string,
+    likes: PropTypes.array,
     comment: PropTypes.number,
-    share: PropTypes.number,
+    shares: PropTypes.array,
   }).isRequired,
 };
