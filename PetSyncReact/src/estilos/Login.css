@@ -1,0 +1,191 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  background-color: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+}
+
+.loginWrapper {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.loginLeft,
+.loginRight {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+}
+
+.loginLogo {
+  font-size: 36px;
+  font-weight: bold;
+  color: #f4bd61;
+  margin-bottom: 10px;
+}
+
+.loginDesc {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.loginBox {
+  width: 100%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.loginInput {
+  height: 45px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  padding-left: 15px;
+  background-color: #fff;
+  color: #000; 
+}
+
+.loginInput:focus {
+  outline: none;
+  border-color: #f4bd61;
+  box-shadow: 0 0 5px rgba(244, 189, 97, 0.5);
+}
+
+.loginButton {
+  height: 45px;
+  border-radius: 5px;
+  border: none;
+  background-color: #f4bd61;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.loginButton:hover {
+  background-color: #e0a94c;
+}
+
+.loginForgot {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin-top: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.loginForgot:hover {
+  color: #f4bd61;
+}
+
+.loginRegisterButton {
+  height: 45px;
+  border-radius: 5px;
+  border: none;
+  background-color: #f4bd61;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.loginRegisterButton:hover {
+  background-color: #e0a94c;
+}
+
+.googleButton {
+  height: 45px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4285f4; 
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.googleButton:hover {
+  background-color: #357ae8;
+}
+
+.googleButton img {
+  height: 20px;
+  width: 20px;
+}
+
+
+@media (max-width: 1024px) {
+  .loginWrapper {
+      padding: 20px;
+  }
+
+  .loginLogo {
+      font-size: 28px;
+  }
+
+  .loginDesc {
+      font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .loginWrapper {
+      width: 90%;
+      padding: 15px;
+  }
+
+  .loginInput {
+      font-size: 14px;
+  }
+
+  .loginButton,
+  .loginRegisterButton {
+      font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loginLogo {
+      font-size: 24px;
+  }
+
+  .loginDesc {
+      font-size: 12px;
+  }
+
+  .loginInput {
+      height: 40px;
+      font-size: 12px;
+  }
+
+  .loginButton,
+  .loginRegisterButton {
+      height: 40px;
+      font-size: 12px;
+  }
+}
+
