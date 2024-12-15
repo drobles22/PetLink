@@ -70,7 +70,7 @@ export const Post = ({post}) => {
 />
             </Link>
                
-                <span className="postUsername">{user.name}</span>
+                <span className="postName">{user.name}</span>
                 <span className="postUsername">{user?.username || 'Unknown User'}</span>
                 <span className="postDate">{format(post.createdAt)}</span>
               </div>

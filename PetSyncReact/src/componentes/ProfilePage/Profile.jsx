@@ -9,6 +9,8 @@ import { PendingRequestsList } from "../FollowersList/PendingRequestList";
 import { RecommendedAccountsList } from "../FollowersList/RecommendedAccounts";
 import { MainFeed } from "../MainPage/MainFeed";
 import { useParams } from "react-router";
+import { NavBar } from "../NavBar/navbar";
+
 
 export const Profile = () => {
 
@@ -55,6 +57,8 @@ export const Profile = () => {
 
   return (
     <>
+        <NavBar></NavBar>
+    
     
     <div className="profile">
       <div className="profileRight">

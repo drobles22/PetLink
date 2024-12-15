@@ -123,16 +123,16 @@
   }
 
   .loginDesc {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .loginInput {
     height: 40px;
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .loginButton {
     height: 40px;
-    font-size: 12px;
+    font-size: 16px;
   }
 }

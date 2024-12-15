@@ -28,10 +28,17 @@
     object-fit: cover;
   }
   
-  .postUsername {
+  .postName {
     font-size: 15px;
     font-weight: 500;
     margin: 0 10px;
+  }
+
+  .postUsername {
+    font-size: 13px;
+    font-weight: 400;
+    margin: 0 10px;
+    color: grey;
   }
   
   .postDate{

@@ -1,6 +1,13 @@
+import { useContext } from "react";
 import "../../estilos/navbar.css";
+import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export const NavBar =() => {
+
+  const {user} = useContext(AuthContext)
+  const PF = "/"
+
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -9,7 +16,7 @@ export const NavBar =() => {
         <div className="searchbar">
         <i className="bi bi-search"></i>
           <input
-            placeholder="Search for friend, post or video"
+            placeholder="Busca lo que gustes!"
             className="searchInput"
           />
         </div>
@@ -25,7 +32,13 @@ export const NavBar =() => {
             <span className="topbarIconBadge">1</span>
           </div>
         </div>
-        <img src="/assets/person/1.jpeg" alt="" className="topbarImg"/>
+        <Link to={`/profile/${user.username}`}>
+         <img src={user.profilePicture ? 
+        PF + user.profilePicture 
+      : PF + "personProfile/defaultUser.jpg" } 
+      alt="" className="topbarImg"/>
+        </Link>
+       
       </div>
     </div>
   );

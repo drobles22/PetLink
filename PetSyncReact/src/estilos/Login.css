@@ -2,6 +2,9 @@
   width: 100vw;
   height: 100vh;
   background-color: #f0f2f5;
+  background-image: url("/Assets/SocialBackground.png");
+  background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
+  background-position: center; /* Centra la imagen */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,6 +113,7 @@
 
 .loginRegisterButton:hover {
   background-color: #e0a94c;
+  color: white !important;
 }
 
 .googleButton {
@@ -174,18 +178,18 @@
   }
 
   .loginDesc {
-      font-size: 12px;
+      font-size: 16px !important;
   }
 
   .loginInput {
       height: 40px;
-      font-size: 12px;
+      font-size: 16px !important;
   }
 
   .loginButton,
   .loginRegisterButton {
       height: 40px;
-      font-size: 12px;
+      font-size: 16px !important ;
   }
 }
 

@@ -1,22 +1,62 @@
 import "../../estilos/Register.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { auth } from "../config/firebase-config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [usernameG, setUsername] = useState("");
+  const [nameG, setnameG] = useState("");
+  const [emailG, setEmail] = useState("");
+  const [passwordG, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+
+   const username = useRef()
+   const name = useRef()
+   const email = useRef()
+   const password = useRef()
+   const passwordReConfirm = useRef()
+   const navigate = useNavigate()
+
+   const handleForm = async (i) => {
+       i.preventDefault();
+       if(passwordReConfirm.current.value != password.current.value){
+        passwordReConfirm.current.setCustomValidity("Contraseñas no son iguales")
+       }else{
+        const user = {
+
+          username:username.current.value,
+          name:name.current.value,
+          email:email.current.value,
+          password:password.current.value,
+
+        }
+        try{
+          await axios.post("/api/auth/register",user)
+          navigate("/login")
+          
+
+
+        }catch(err){
+          console.log(err)
+        }
+       }
+
+     };
+
+
+
+
   const handleRegister = async () => {
-    if (password !== confirmPassword) {
+    if (passwordG !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, emailG, passwordG,nameG);
       const user = userCredential.user;
       console.log("User created:", user);
       alert("Registration successful!");
@@ -36,43 +76,61 @@ export default function Register() {
           </span>
         </div>
         <div className="loginRight">
-          <div className="loginBox">
+          <form className="loginBox" onSubmit={handleForm}>
             {error && <p className="error">{error}</p>}
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Nombre de usuario"
               className="loginInput"
-              value={username}
+              required
+              ref={username}
+              value={usernameG}
               onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Nombre"
+              className="loginInput"
+              required
+              ref={name}
+              value={nameG}
+              onChange={(e) => setnameG(e.target.value)}
             />
             <input
               type="email"
               placeholder="Email"
               className="loginInput"
-              value={email}
+              required
+              ref={email}
+              value={emailG}
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Contraseña"
               className="loginInput"
-              value={password}
+              required
+              ref={password}
+              value={passwordG}
+              minLength={"6"}
               onChange={(e) => setPassword(e.target.value)}
             />
             <input
               type="password"
-              placeholder="Password Again"
+              placeholder="Repetir contraseña"
               className="loginInput"
+              required
+              ref={passwordReConfirm}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <button className="loginButton" onClick={handleRegister}>
+            <button className="loginButton" type="submit">
               Sign Up
             </button>
             <button className="loginRegisterButton">
               Log into Account
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

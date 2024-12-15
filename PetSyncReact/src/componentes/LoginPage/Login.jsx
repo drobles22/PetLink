@@ -1,22 +1,38 @@
 import "../../estilos/Login.css";
-import { useState } from "react";
+import { useState, useRef, useContext } from "react";
 import { auth, provider } from "../../componentes/config/firebase-config";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { loginCall } from "../../ApiCalls";
+import {AuthContext} from "../../context/AuthContext"
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [emailG, setEmail] = useState("");
+  const [passwordG, setPassword] = useState("");
+  const [err, setError] = useState("");
+  const email = useRef()
+  const password = useRef()
+
+  const {user,isFetching,error,dispatch} = useContext(AuthContext)
+  console.log("AuthContext values:", { user, isFetching, error, dispatch });
+
+
+  const handleForm = (i) => {
+    i.preventDefault();
+    loginCall(
+      { email:email.current.value, password: password.current.value },
+      dispatch
+    );
+  };
 
   const handleLogin = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, emailG, passwordG);
       const user = userCredential.user;
       console.log("Logged in user:", user);
       alert("Login successful!");
       // Redirigir a la página principal o dashboard
-    } catch (error) {
-      console.error("Error logging in:", error.message);
+    } catch (err) {
+      console.log("Error logging in:", err.message);
       setError("Invalid email or password. Please try again.");
     }
   };
@@ -28,8 +44,8 @@ export default function Login() {
       console.log("Google logged in user:", user);
       alert("Login with Google successful!");
       // Redirigir a la página principal o dashboard
-    } catch (error) {
-      console.error("Error logging in with Google:", error.message);
+    } catch (err) {
+      console.err("Error logging in with Google:", err.message);
       setError("Failed to log in with Google. Please try again.");
     }
   };
@@ -43,25 +59,30 @@ export default function Login() {
             Conecta con aquellos amigos peludos al rededor del mundo!!
           </span>
         </div>
-        <div className="loginRight">
+        <form className="loginRight" onSubmit={handleForm}>
           <div className="loginBox">
-            {error && <p className="error">{error}</p>}
+            {err && <p className="error">{err}</p>}
             <input
               type="email"
               placeholder="Email"
               className="loginInput"
-              value={email}
+              value={emailG}
+              ref={email}
+              required
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"
               placeholder="Password"
               className="loginInput"
-              value={password}
+              value={passwordG}
+              required
+              minLength={"6"}
+              ref={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="loginButton" onClick={handleLogin}>
-              Log In
+            <button className="loginButton" >
+              {isFetching ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>:"Log in"}
             </button>
             <button className="googleButton" onClick={handleGoogleLogin}>
               <img
@@ -75,7 +96,7 @@ export default function Login() {
               Create a New Account
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
