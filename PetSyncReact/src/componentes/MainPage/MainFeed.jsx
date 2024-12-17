@@ -1,58 +1,39 @@
-
-import { useState } from "react";
-/*import { Share } from "./Share";*/
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types"; // Importar PropTypes
 import { Post } from "./Post";
-import { Posts } from "../../DummyData";
+import axios from "axios";
+import "../../estilos/stylesheetMainFeed.css";
 
-export const MainFeed = () => {
+export const MainFeed = ({ username }) => {
+  const [posts, setPosts] = useState([]);
 
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = username
+          ? await axios.get(`/api/posts/profile/${username}`)
+          : await axios.get("api/posts/timeline/6712fdbba4c3191dee6e3539");
+  
+        console.log("Fetched posts:", response.data);
+        setPosts(response.data);
+      } catch (error) {
+        console.error("Error tomando los posts:", error);
+      }
+    };
+  
+    fetchPost();
+  }, [username]);
   return (
-    <>
     <div className="container feedcontainer">
-
-
-    {/*<div>
-      <button className="btn btn-outline-warning btn-lg selectorsMain">Para ti</button>
-      <button className="btn btn-outline-warning btn-lg selectorsMain">Siguiendo</button>
-    </div>*/}
-    <div className="btn-group selectorsMainRadiusBtn" role="group" aria-label="Basic radio toggle button group">
-  <input type="radio" className="btn-check" name="btnradio" id="btnradio1" checked={true} data-listener-added_d6e8dc35="true" />
-  <label className="btn btn-outline-primary" htmlFor="btnradio1">Siguiendo</label>
-
-  <input type="radio" className="btn-check" name="btnradio" id="btnradio2" checked={true} />
-  <label className="btn btn-outline-primary" htmlFor="btnradio2">Para ti</label>
-
-</div>
-    
-    <dir>
-      <div className="div newPostInput_Div">
-        <i className="bi bi-paperclip iconClipz"></i>
-       {/*<input className="form-control" type="file" id="formFile"/>*/} 
-        <textarea placeholder="Cuentanos sobre las ultimas noticias de tu mascota!" className="form-control input_NewPost" id="exampleTextarea" rows="3" data-listener-added_d6e8dc35="true"></textarea>
-
-      </div>
-      <div className="div newPostButtom_Div">
-        <button className="btn btn-warning">Subir<i style={{marginLeft:"5px"}} className="bi bi-arrow-right"></i>
-
-        </button>
-      </div>
-    </dir>
-    <hr />
-
-    
-    {/*<Share></Share>*/}
-    
-    {Posts.map((p) =>(
-
-      <Post key={p.id} post={p}></Post>
-    ))}
-    
-<hr />
-
-
+      {posts.map((p) => (
+        <Post key={p._id} post={p} />
+      ))}
+      <hr />
     </div>
-    
-    
-    </>
-  )
+  );
+};
+
+
+MainFeed.propTypes = {
+  username: PropTypes.string
 }

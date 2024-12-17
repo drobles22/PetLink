@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useContext } from 'react';
+import { Routes, Route, BrowserRouter as Router, Navigate } from 'react-router-dom';
+import Home from './componentes/Home/Home';
+import { Profile } from './componentes/ProfilePage/Profile';
+import Login from "./componentes/LoginPage/Login";
+import './App.css';
+import "./estilos/stylesheetMainFeed.css";
+import './index.css';
+import 'bootswatch/dist/zephyr/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import "./estilos/navbar.css";
+import '../src/estilos/stylesheetMainFeed.css';
+import { AuthContext, AuthContextProvider } from './context/AuthContext';
+import Register from './componentes/RegisterPage/Register';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <AuthContextProvider> {/* Asegúrate de envolver tu aplicación con el AuthContextProvider */}
+      <div className="homeContainer">
+        <Routes>
+          {/* Ruta principal */}
+          <Route path="/" element={<AuthContent />} />
+          {/* Ruta del perfil */}
+          <Route path="/profile/:username" element={<Profile />} />
+          {/* Ruta de login, solo si el usuario no está autenticado */}
+          <Route 
+            path="/login" 
+            element={ <Login/> }
+          />
+          {/* Ruta de register, solo si el usuario no está autenticado */}
+          <Route 
+            path="/register" 
+            element={ <Register/> }
+          />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </AuthContextProvider>
+    
+  );
 }
 
-export default App
+// Componente que maneja el contenido basado en la autenticación
+function AuthContent() {
+  const { user } = useContext(AuthContext); // Accede al contexto para obtener el estado del usuario
+  
+  return user ? <Home /> : <Register />; // Si el usuario está autenticado, renderiza Home, de lo contrario Register
+}
+
+// Componente para proteger las rutas de login y register
+function AuthProtectedRoute() {
+  const { user } = useContext(AuthContext); // Accede al contexto para verificar el estado del usuario
+  
+  // Si el usuario ya está autenticado, redirige al home, si no, muestra el login o register
+  return user ? <Navigate to="/" /> : <Login />; // Puedes cambiar <Login /> por <Register /> dependiendo de la ruta
+}
+
+export default App;

@@ -1,0 +1,110 @@
+
+.commentModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background:white
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.commentsList {
+  margin-bottom: 15px;
+}
+
+.commentItem {
+  display: flex;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e1e1e1;
+  padding-bottom: 10px;
+}
+
+.commentItem:last-child {
+  border-bottom: none;
+}
+
+.commentProfileImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.commentText {
+  flex-grow: 1;
+}
+
+.commentText strong {
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.commentText p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.commentModalBtnSubmit {
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 100%;
+  background-color: #f4bd61; 
+  border: #f4bd61;
+}
+
+.commentModalBtnSubmit:hover {
+  background-color: #f4bd61;
+}
+
+.commentModalBtnClose {
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 100%;
+  background-color: #f44336; 
+  border: #f44336;
+}
+
+.commentModalBtnClose:hover {
+  background-color: #e53935;
+}
