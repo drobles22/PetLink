@@ -1,95 +1,73 @@
 import "../../estilos/share.css";
-import { useContext, useRef, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { useState } from "react";
 import axios from "axios";
-import { PermMedia, Label, Room, EmojiEmotions, Cancel } from "@material-ui/icons";
 
-export default function Share() {
-  const { user } = useContext(AuthContext);
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const desc = useRef();
+export const Share = () => {
   const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const newPetPost = {
-      userId: user._id,
-      desc: desc.current.value,
-    };
+    const data = new FormData();
+    data.append("desc", document.getElementById("exampleTextarea").value);
     if (file) {
-      const data = new FormData();
-      const fileName = Date.now() + file.name;
-      data.append("name", fileName);
       data.append("file", file);
-      newPetPost.img = fileName;
-      try {
-        await axios.post("/api/upload", data);
-      } catch (err) {
-        console.error("Error uploading file:", err);
-      }
     }
+
     try {
-      await axios.post("/api/pets", newPetPost);
+      const res = await axios.post("http://localhost:8800/", data);
+      console.log("Post creado:", res.data);
       window.location.reload();
     } catch (err) {
-      console.error("Error creating post:", err);
+      console.error("Error creando post", err);
     }
   };
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile)); 
+  };
+
   return (
-    <div className="share">
-      <div className="shareWrapper">
-        <div className="shareTop">
-          <img
-            className="shareProfileImg"
-            src={user.profilePicture ? PF + user.profilePicture : PF + "person/noAvatar.png"}
-            alt=""
-          />
-          <input
-            placeholder={"Share your pet story, " + user.username + "!"}
-            className="shareInput"
-            ref={desc}
-          />
-        </div>
-        <hr className="shareHr" />
-        {file && (
-          <div className="shareImgContainer">
-            <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
-            <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
+    <>
+      <div className="wrap">
+        <form onSubmit={submitHandler}>
+          <div className="contTop">
+            <textarea
+              placeholder="Cuéntanos sobre las últimas noticias de tu mascota!"
+              className="form-control input_NewPost"
+              id="exampleTextarea"
+              rows="3"
+            ></textarea>
           </div>
-        )}
-        <form className="shareBottom" onSubmit={submitHandler}>
-          <div className="shareOptions">
-            <label htmlFor="file" className="shareOption">
-              <PermMedia htmlColor="tomato" className="shareIcon" />
-              <span className="shareOptionText">Photo or Video</span>
-              <input
-                style={{ display: "none" }}
-                type="file"
-                id="file"
-                accept=".png,.jpeg,.jpg"
-                onChange={(e) => setFile(e.target.files[0])}
-              />
-            </label>
-            <div className="shareOption">
-              <Label htmlColor="blue" className="shareIcon" />
-              <span className="shareOptionText">Tag</span>
+          {preview && (
+            <div className="imagePreview">
+              <img src={preview} alt="Preview" style={{ width: "300px", height: "200px", objectFit: "cover" }} />
             </div>
-            <div className="shareOption">
-              <Room htmlColor="green" className="shareIcon" />
-              <span className="shareOptionText">Location</span>
+          )}
+          <hr />
+          <div className="contBottom">
+            <div className="NewPostOptions">
+              <label htmlFor="file" className="newPostOp">
+                <i className="bi bi-card-image"></i>
+                <span className="OptionText">Image</span>
+                <input
+                  style={{ display: "none" }}
+                  type="file"
+                  id="file"
+                  accept=".png,.jpeg,.jpg"
+                  onChange={handleFileChange}
+                />
+              </label>
             </div>
-            <div className="shareOption">
-              <EmojiEmotions htmlColor="goldenrod" className="shareIcon" />
-              <span className="shareOptionText">Feelings</span>
-            </div>
+            <button className="btn btn-warning shareButton" type="submit">
+              Subir <i style={{ marginLeft: "5px" }} className="bi bi-arrow-right"></i>
+            </button>
           </div>
-          <button className="shareButton" type="submit">
-            Share
-          </button>
         </form>
       </div>
-    </div>
+    </>
   );
-}
+};
 
