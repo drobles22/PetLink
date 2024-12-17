@@ -1,34 +1,95 @@
-import "../../estilos/share.css"
-export const Share = () => {
+import "../../estilos/share.css";
+import { useContext, useRef, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
+import { PermMedia, Label, Room, EmojiEmotions, Cancel } from "@material-ui/icons";
+
+export default function Share() {
+  const { user } = useContext(AuthContext);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const desc = useRef();
+  const [file, setFile] = useState(null);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const newPetPost = {
+      userId: user._id,
+      desc: desc.current.value,
+    };
+    if (file) {
+      const data = new FormData();
+      const fileName = Date.now() + file.name;
+      data.append("name", fileName);
+      data.append("file", file);
+      newPetPost.img = fileName;
+      try {
+        await axios.post("/api/upload", data);
+      } catch (err) {
+        console.error("Error uploading file:", err);
+      }
+    }
+    try {
+      await axios.post("/api/pets", newPetPost);
+      window.location.reload();
+    } catch (err) {
+      console.error("Error creating post:", err);
+    }
+  };
+
   return (
-    <>
-    
-    <div className="container containerShare"></div>
-    <div className="wrap">
-        <div className="contTop">
-        <textarea placeholder="Cuentanos sobre las ultimas noticias de tu mascota!" 
-        className="form-control input_NewPost" id="exampleTextarea" rows="3" 
-        data-listener-added_d6e8dc35="true"></textarea>
+    <div className="share">
+      <div className="shareWrapper">
+        <div className="shareTop">
+          <img
+            className="shareProfileImg"
+            src={user.profilePicture ? PF + user.profilePicture : PF + "person/noAvatar.png"}
+            alt=""
+          />
+          <input
+            placeholder={"Share your pet story, " + user.username + "!"}
+            className="shareInput"
+            ref={desc}
+          />
+        </div>
+        <hr className="shareHr" />
+        {file && (
+          <div className="shareImgContainer">
+            <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
+            <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
+          </div>
+        )}
+        <form className="shareBottom" onSubmit={submitHandler}>
+          <div className="shareOptions">
+            <label htmlFor="file" className="shareOption">
+              <PermMedia htmlColor="tomato" className="shareIcon" />
+              <span className="shareOptionText">Photo or Video</span>
+              <input
+                style={{ display: "none" }}
+                type="file"
+                id="file"
+                accept=".png,.jpeg,.jpg"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </label>
+            <div className="shareOption">
+              <Label htmlColor="blue" className="shareIcon" />
+              <span className="shareOptionText">Tag</span>
             </div>
-            <hr />
-            <div className="contBottom">
-                <div className="div NewPostOptions">
-                    <div className="newPostOp">
-                        <i className="bi bi-card-image"></i>
-
-                        <span className="OptionText">Image</span>
-                    </div>
-                </div>
-                <button className="btn btn-warning shareButton">Subir<i style={{marginLeft:"5px"}} className="bi bi-arrow-right"></i></button>
-
+            <div className="shareOption">
+              <Room htmlColor="green" className="shareIcon" />
+              <span className="shareOptionText">Location</span>
             </div>
-        
-
+            <div className="shareOption">
+              <EmojiEmotions htmlColor="goldenrod" className="shareIcon" />
+              <span className="shareOptionText">Feelings</span>
+            </div>
+          </div>
+          <button className="shareButton" type="submit">
+            Share
+          </button>
+        </form>
+      </div>
     </div>
-    
-    
-    
-    
-    </>
-  )
+  );
 }
+
