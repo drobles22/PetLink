@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types"; // Importar PropTypes
+import PropTypes from "prop-types"; 
 import { Post } from "./Post";
+import { Share } from "./Share";
 import axios from "axios";
 import "../../estilos/stylesheetMainFeed.css";
 
@@ -25,6 +26,8 @@ export const MainFeed = ({ username }) => {
   }, [username]);
   return (
     <div className="container feedcontainer">
+      {/* Llamar al componente Share */}
+      <Share />
       {posts.map((p) => (
         <Post key={p._id} post={p} />
       ))}
@@ -32,7 +35,6 @@ export const MainFeed = ({ username }) => {
     </div>
   );
 };
-
 
 MainFeed.propTypes = {
   username: PropTypes.string
