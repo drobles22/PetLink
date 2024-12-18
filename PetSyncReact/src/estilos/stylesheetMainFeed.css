@@ -169,3 +169,11 @@ textarea#exampleTextarea:focus {
     color: white;
     border-color: #f4bd61;
 }
+
+.feed {
+    flex: 3;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
