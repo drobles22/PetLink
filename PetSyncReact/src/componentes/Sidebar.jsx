@@ -19,7 +19,6 @@ export default function Sidebar() {
             <NavLink to='/home'><i className="bi bi-house" /> <a className="sidebarListItemText">Inicio</a> </NavLink>
           </li>
 
-
           <li className="sidebarListItem">
             <NavLink to='/Profile'><i className="bi bi-person-circle" /> <a className="sidebarListItemText">Perfil</a> </NavLink>
           </li>
@@ -67,7 +66,7 @@ export default function Sidebar() {
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Estado Civil:</span>
-            <span className="rightbarInfoValue">Soltera</span>
+            <span className="rightbarInfoValue">Soltero</span>
           </div>
         </div>
         </div>
