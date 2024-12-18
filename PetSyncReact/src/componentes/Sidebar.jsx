@@ -1,7 +1,7 @@
 import "../estilos/sidebar.css";
 import { useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Sidebar() {
 
@@ -16,24 +16,17 @@ export default function Sidebar() {
         <ul className="sidebarList">
          
           <li className="sidebarListItem">
-            <NavLink to='/home'><i className="bi bi-house" /> <a className="sidebarListItemText">Inicio</a> </NavLink>
+            <NavLink className="sidebarListItemText" to='/home'><i className="bi bi-house" />Inicio</NavLink>
           </li>
 
           <li className="sidebarListItem">
-            <NavLink to='/Profile'><i className="bi bi-person-circle" /> <a className="sidebarListItemText">Perfil</a> </NavLink>
+            <NavLink className="sidebarListItemText" to='/Profile'><i className="bi bi-person-circle" />Perfil</NavLink>
           </li>
 
           <li className="sidebarListItem">
-            <NavLink to='/'><i className="bi bi-people"/> <a className="sidebarListItemText">Amigos</a> </NavLink>
+            <NavLink className="sidebarListItemText" to='/'><i className="bi bi-people"/> Amigos</NavLink>
           </li>
         
-          <li className="sidebarListItem">
-            <NavLink to='/'><i className="bi bi-calendar-event"/> <a className="sidebarListItemText">Eventos</a> </NavLink>
-          </li>
-
-          <li className="sidebarListItem">
-            <NavLink to='/'><i className="bi bi-gear"/> <a className="sidebarListItemText">Configuracion</a> </NavLink>
-          </li>
         </ul> 
 
         <hr className="sidebarHr" />

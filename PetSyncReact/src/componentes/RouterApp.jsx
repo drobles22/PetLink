@@ -1,7 +1,7 @@
-import { Home } from "./Home/Home";
-import { Login } from "./LoginPage/Login";
+import Home from "./Home/Home";
+import Login from "./LoginPage/Login";
+import Register from "./RegisterPage/Register";
 import { Profile } from "./ProfilePage/Profile";
-import { Register } from "./RegisterPage/Register";
 import { NotFoud } from "./NotFound";
 import {
   BrowserRouter as Router,
@@ -10,7 +10,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 
 function App() {

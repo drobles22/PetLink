@@ -12,6 +12,7 @@ export const Profile = () => {
   const [user, setUser] = useState({});
   const [postCount, setPostCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
+
   const [showModal, setShowModal] = useState(false); // Para mostrar/ocultar el modal
   const [formData, setFormData] = useState({
     name: "",
@@ -62,6 +63,25 @@ export const Profile = () => {
     };
     fetchUser();
   }, [Username, currentUser]);
+
+  const handleClick = async () => {
+    try {
+      if (followed) {
+        await axios.put(`api/users/${user._id}/unfollow`, {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "UNFOLLOW", payload: user._id });
+      } else {
+        await axios.put(`api/users/${user._id}/follow`, {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "FOLLOW", payload: user._id });
+      }
+      setFollowed(!followed);
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   // Manejar el cambio de inputs en el modal
   const handleInputChange = (e) => {
@@ -124,7 +144,13 @@ export const Profile = () => {
             <div className="profileInfo">
               <h4 className="profileInfoName">{user.name}</h4>
               <h6>@{user.username}</h6>
-              <h6>{user.country}</h6>
+              {user.username !== currentUser.username && (
+          <button className="rightbarFollowButton" onClick={handleClick} >
+            {isFollowing ? "Unfollow" : "Follow"}
+            {isFollowing ? <i className="bi bi-x"></i> : <i className="bi bi-plus"></i>
+            }
+          </button>
+        )}
               <div className="followersContainer">
                 <div className="div followersInfo">
                   <strong><span>{postCount}</span></strong>
