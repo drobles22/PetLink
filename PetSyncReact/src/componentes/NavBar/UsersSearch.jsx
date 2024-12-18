@@ -1,15 +1,18 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import "../../estilos/UsersSearch.css"
+import "../../estilos/UsersSearch.css";
 
 export const UsersSearch = ({ results, setSearchTerm }) => {
   const handleClearSearch = () => {
-    setSearchTerm(""); // Limpiar el campo de búsqueda
+    setSearchTerm("");
   };
+
+  if (!Array.isArray(results) || results.length === 0) {
+    return null;
+  }
 
   return (
     <div className="usersSearchContainer">
-      {/* Mostrar cada usuario encontrado en la búsqueda */}
       {results.map((user) => (
         <Link
           to={`/profile/${user.username}`}
@@ -31,3 +34,17 @@ export const UsersSearch = ({ results, setSearchTerm }) => {
     </div>
   );
 };
+
+UsersSearch.propTypes = {
+  results: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      username: PropTypes.string.isRequired,
+      profilePicture: PropTypes.string,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  setSearchTerm: PropTypes.func.isRequired,
+};
+
+export default UsersSearch;
