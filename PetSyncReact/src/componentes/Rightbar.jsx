@@ -1,8 +1,8 @@
 import "../estilos/rightbar.css";
-import { Users } from "../DummyData";
 import Online from "../componentes/Online";
 
-export default function Rightbar({ profile }) {
+
+export default function Rightbar() {
   const HomeRightbar = () => {
     return (
       <>
