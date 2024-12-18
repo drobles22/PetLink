@@ -1,7 +1,5 @@
 import "../../estilos/Register.css";
 import { useRef, useState } from "react";
-import { auth } from "../config/firebase-config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -13,56 +11,45 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+  const username = useRef();
+  const name = useRef();
+  const email = useRef();
+  const password = useRef();
+  const passwordReConfirm = useRef();
+  const navigate = useNavigate();
 
-   const username = useRef()
-   const name = useRef()
-   const email = useRef()
-   const password = useRef()
-   const passwordReConfirm = useRef()
-   const navigate = useNavigate()
-
-   const handleForm = async (i) => {
-       i.preventDefault();
-       if(passwordReConfirm.current.value != password.current.value){
-        passwordReConfirm.current.setCustomValidity("Contraseñas no son iguales")
-       }else{
-        const user = {
-
-          username:username.current.value,
-          name:name.current.value,
-          email:email.current.value,
-          password:password.current.value,
-
-        }
-        try{
-          await axios.post("/api/auth/register",user)
-          navigate("/login")
-          
-
-
-        }catch(err){
-          console.log(err)
-        }
-       }
-
-     };
-
-
-
-
-  const handleRegister = async () => {
-    if (passwordG !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
+  const handleForm = async (i) => {
+    i.preventDefault();
+    if (passwordReConfirm.current.value !== password.current.value) {
+      passwordReConfirm.current.setCustomValidity("Contraseñas no son iguales");
+    } else {
+      passwordReConfirm.current.setCustomValidity(""); // Clear the custom validity message
+      const user = {
+        username: username.current.value,
+        name: name.current.value,
+        email: email.current.value,
+        password: password.current.value,
+      };
+      try {
+        await axios.post("/api/auth/register", user);
+        navigate("/login");
+      } catch (err) {
+        console.error("Error during registration:", err);
+        setError("Failed to register. Please try again.");
+      }
     }
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, emailG, passwordG,nameG);
-      const user = userCredential.user;
-      console.log("User created:", user);
-      alert("Registration successful!");
-    } catch (error) {
-      console.error("Error creating user:", error.message);
-      setError(error.message);
+  };
+
+  const handleLoginRedirect = () => {
+    navigate("/login"); // Navigate to the login page
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    if (e.target.value !== password.current.value) {
+      passwordReConfirm.current.setCustomValidity("Contraseñas no son iguales");
+    } else {
+      passwordReConfirm.current.setCustomValidity(""); // Clear the custom validity message
     }
   };
 
@@ -122,12 +109,16 @@ export default function Register() {
               required
               ref={passwordReConfirm}
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={handleConfirmPasswordChange}
             />
             <button className="loginButton" type="submit">
               Sign Up
             </button>
-            <button className="loginRegisterButton">
+            <button
+              className="loginRegisterButton"
+              type="button"
+              onClick={handleLoginRedirect}
+            >
               Log into Account
             </button>
           </form>
