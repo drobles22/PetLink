@@ -20,6 +20,7 @@ export const Post = ({ post }) => {
   const [commentUsers , setCommentUsers] = useState({});
   const [newComment, setNewComment] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const backendUrl = "http://localhost:8800"
   const PF = "/";
 
   useEffect(() => {
@@ -108,7 +109,7 @@ export const Post = ({ post }) => {
               <img
                 className="postProfileImg"
                 src={user.profilePicture !== "" && user.profilePicture !== null
-                    ? PF + user.profilePicture
+                    ? PF + `images/`+user.profilePicture
                     : PF + "personProfile/defaultUser.jpg"
                 }
                 alt=""
@@ -124,7 +125,7 @@ export const Post = ({ post }) => {
         </div>
         <div className="postCenter">
           <span className="postText">{post?.postdesc}</span>
-          <img className="postImg" src={PF + post.attachment} alt="" />
+          <img className="postImg" src={`${backendUrl}${post.attachment}`} alt="" />
         </div>
         <div className="postBottom">
           <div className="postBottomLeft postLikeCounter">
@@ -208,6 +209,6 @@ Post.propTypes = {
         comentario: PropTypes.string.isRequired,
       })
     ).isRequired,
-    createdAt: PropTypes.string.isRequired, // Add createdAt to prop types validation
+    createdAt: PropTypes.string.isRequired, 
   }).isRequired,
 };

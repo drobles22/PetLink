@@ -21,3 +21,13 @@ export const LoginFail = (error) => ({
 
 });
 
+export const Follow = (userId) => ({
+    type: "FOLLOW",
+    res: userId,
+  });
+  
+  export const Unfollow = (userId) => ({
+    type: "UNFOLLOW",
+    res: userId,
+  });
+
