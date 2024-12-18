@@ -10,7 +10,7 @@ import "../../estilos/modalsComents.css"
 export const Post = ({ post }) => {
   const { user: currentUser } = useContext(AuthContext); // Usamos el user desde el contexto
   const [like, setLike] = useState(post.likes.length);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser._id));
 
   const [share, setShare] = useState(post.shares.length);
   const [IsShare, setIsShare] = useState(false);
@@ -66,9 +66,18 @@ export const Post = ({ post }) => {
     fetchUserComentarios();
   }, [post.userId, post._id, post.comentarios]);
 
-  const likeHandler = () => {
-    setLike(isLiked ? like - 1 : like + 1);
-    setIsLiked(!isLiked);
+  const likeHandler = async () => {
+    try {
+      await axios.put(`/api/posts/${post._id}/like`, { userId: currentUser._id });
+      if (isLiked) {
+        setLike(like - 1);
+      } else {
+        setLike(like + 1);
+      }
+      setIsLiked(!isLiked);
+    } catch (err) {
+      console.error("Error updating like:", err);
+    }
   };
 
   const shareHandler = () => {
@@ -199,5 +208,6 @@ Post.propTypes = {
         comentario: PropTypes.string.isRequired,
       })
     ).isRequired,
+    createdAt: PropTypes.string.isRequired, // Add createdAt to prop types validation
   }).isRequired,
 };
