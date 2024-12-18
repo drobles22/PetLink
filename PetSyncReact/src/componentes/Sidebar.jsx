@@ -1,43 +1,61 @@
 import "../estilos/sidebar.css";
+import { useContext } from "react";
+import { NavLink, Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Sidebar() {
+
+    const { user } = useContext(AuthContext); 
+    const PF = "/"; 
+
   return (
     <>
       <div className="sidebar">
       <h1> PetSync</h1>
-        <div>
-          <form action="">
-            <input type="search" name="" id="" placeholder="Busqueda"/>
-          </form>
-        </div>
       <div className="sidebarWrapper">
         <ul className="sidebarList">
+         
           <li className="sidebarListItem">
-            <i className="bi bi-house" />
-            <a href="../main.jsx" className="sidebarListItemText">Inicio</a>
+            <NavLink to='/home'><i className="bi bi-house" /> <a className="sidebarListItemText">Inicio</a> </NavLink>
           </li>
+
+
           <li className="sidebarListItem">
-            <i className="bi bi-person-circle" />
-            <span className="sidebarListItemText">Perfiles</span>
+            <NavLink to='/Profile'><i className="bi bi-person-circle" /> <a className="sidebarListItemText">Perfil</a> </NavLink>
           </li>
+
           <li className="sidebarListItem">
-            <i className="bi bi-people" />
-            <span className="sidebarListItemText">Amigos</span>
+            <NavLink to='/'><i className="bi bi-people"/> <a className="sidebarListItemText">Amigos</a> </NavLink>
           </li>
+        
           <li className="sidebarListItem">
-            <i className="bi bi-calendar-event"/>
-            <span className="sidebarListItemText">Eventos</span>
+            <NavLink to='/'><i className="bi bi-calendar-event"/> <a className="sidebarListItemText">Eventos</a> </NavLink>
           </li>
+
           <li className="sidebarListItem">
-            <i className="bi bi-gear" />
-            <span className="sidebarListItemText">Configuracion</span>
+            <NavLink to='/'><i className="bi bi-gear"/> <a className="sidebarListItemText">Configuracion</a> </NavLink>
           </li>
         </ul> 
+
         <hr className="sidebarHr" />
 
+
+
         <div className="sidebarPerfil">
+        
         <i className="bi bi-newspaper"/>
-        <a href="./ProfilePage/Profile.jsx">Perfil</a>
+        <Link to={`/profile/${user.username}`}>
+          <img
+            src={
+              user.profilePicture
+                ? PF + user.profilePicture 
+                : PF + "personProfile/defaultUser.jpg" 
+            }
+            alt="User profile"
+            className="topbarImg"
+          />
+        </Link>
+
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Pais:</span>
