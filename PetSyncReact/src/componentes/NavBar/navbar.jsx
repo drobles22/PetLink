@@ -1,15 +1,16 @@
 import { useContext, useState } from "react";
 import "../../estilos/navbar.css";
 import { AuthContext } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UsersSearch } from "./UsersSearch";
 
 export const NavBar = () => {
-  const { user } = useContext(AuthContext); // Obtener el usuario desde el contexto
+  const { user, dispatch } = useContext(AuthContext); // Obtener el usuario y el dispatch desde el contexto
   const PF = "/"; // Prefijo para las rutas de las imágenes
   const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
   const [searchResults, setSearchResults] = useState([]); // Resultados de búsqueda
+  const navigate = useNavigate(); // Hook para la navegación
 
   // Función para manejar la búsqueda de usuarios
   const handleSearch = async (e) => {
@@ -28,6 +29,13 @@ export const NavBar = () => {
       console.error("Error al buscar usuarios:", error);
       setSearchResults([]); // Limpiar resultados si ocurre un error
     }
+  };
+
+  // Función para manejar el logout
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" }); // Despachar la acción de logout
+    localStorage.removeItem("user"); // Eliminar el usuario del local storage
+    navigate("/login"); // Navegar a la página de login
   };
 
   return (
@@ -60,6 +68,7 @@ export const NavBar = () => {
             className="topbarImg" // Asegúrate de que la clase CSS esté definida
           />
         </Link>
+        <i className="bi bi-box-arrow-right logoutIcon" onClick={handleLogout}></i> {/* Icono de logout */}
       </div>
     </div>
   );
