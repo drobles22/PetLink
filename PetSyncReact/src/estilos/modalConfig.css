@@ -1,0 +1,84 @@
+/* Asegúrate de que estas reglas se encuentren en el archivo profile.css */
+.profile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+  }
+  
+  .profile-modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    z-index: 1001;
+  }
+  
+  .profile-modal-field {
+    margin-bottom: 15px;
+  }
+  
+  .profile-modal-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .profile-modal-field input,
+  .profile-modal-field textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: black !important;
+    background-color: wheat !important;
+  }
+  
+  .profile-modal-field textarea {
+    resize: none;
+    height: 80px;
+  }
+  
+  button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    border: none;
+    background-color: #f4bd61 !important;
+    border-radius: 8px !important;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    border-color: #F0BB78 !important;
+    background-color: #FAB12F !important;
+  }
+  
+  .configButton{
+
+    background-color: #f4bd61;
+    border-radius: 8px;
+    padding: 1%;
+
+  }
+
+  .configButton:hover{
+
+    border-color: #f4bd61;
+
+
+  }
+
+  .ButtonWrapper{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
