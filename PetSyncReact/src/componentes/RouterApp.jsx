@@ -9,27 +9,22 @@ import { PendingRequestsList } from "./FollowersList/PendingRequestList"
 import { RecommendedAccounts } from "./FollowersList/RecommendedAccounts"
 
 export const RouterApp = () => {
-     
-
     return (
-    
-    
     <>
-
-
+    
         <Routes>
             <Route path="/" Component={ Home }></Route>
             <Route path="/home" Component={ Home }></Route>
-            <Route path="*" Component={ NotFound }></Route>
-            <Route path="/Profiler" Component={ Profiler }></Route>
+            <Route path="/Profiler/:id" Component={ Profiler }></Route>
             <Route path="/main" Component={ MainFeed }></Route>
             <Route path="/Register" Component={ Register }></Route>
             <Route path="/ForgotPass" Component={ ForgotPass }></Route>
-            <Route path="/FollowersList" Component={ FollowersList }></Route>
-            <Route path="/PendingRequestsList" Component={ PendingRequestsList }></Route>
-            <Route path="/RecommendedAccounts" Component={ RecommendedAccounts }></Route>
+            <Route path="/FollowersList/:id" Component={ FollowersList }></Route>
+            <Route path="/PendingRequestsList/:id" Component={ PendingRequestsList }></Route>
+            <Route path="/RecommendedAccounts/:id" Component={ RecommendedAccounts }></Route>
+
+            <Route path="*" Component={ NotFound }></Route>
         </Routes> 
     </>
   )
-
 }

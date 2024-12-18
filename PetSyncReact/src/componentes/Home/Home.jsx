@@ -10,17 +10,18 @@ import { BrowserRouter as  Router} from "react-router-dom";
 
 export default function Home() {
   return (
-    <>
+    <>      
+    <Router>
+      <RouterApp/>
+    </Router>
     <NavBar></NavBar>
-      <Router>
-        < RouterApp/>
-      </Router>
+
 
       <div className="homeContainer">
-        <Sidebar />
+        {<Sidebar />}
         <FeedDivisors></FeedDivisors>
         <MainFeed></MainFeed>
-        <Rightbar/>
+        {<Rightbar/>}
       </div>
     </>
   );

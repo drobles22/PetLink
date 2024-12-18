@@ -1,12 +1,4 @@
 import "../estilos/sidebar.css";
-import {
-  Chat,
-  Group,
-  Event,
-  Home,
-  AccountCircle,
-  Settings,
-} from '@mui/icons-material';
 
 export default function Sidebar() {
   return (
@@ -21,30 +13,30 @@ export default function Sidebar() {
       <div className="sidebarWrapper">
         <ul className="sidebarList">
           <li className="sidebarListItem">
-            <Home className="sidebarIcon" />
+            <i className="bi bi-house" />
             <a href="../main.jsx" className="sidebarListItemText">Inicio</a>
           </li>
           <li className="sidebarListItem">
-            <Chat className="sidebarIcon" />
+            <i className="bi bi-person-circle" />
             <span className="sidebarListItemText">Perfiles</span>
           </li>
           <li className="sidebarListItem">
-            <Group className="sidebarIcon" />
+            <i className="bi bi-people" />
             <span className="sidebarListItemText">Amigos</span>
           </li>
           <li className="sidebarListItem">
-            <Event className="sidebarIcon" />
+            <i className="bi bi-calendar-event"/>
             <span className="sidebarListItemText">Eventos</span>
           </li>
           <li className="sidebarListItem">
-            <Settings className="sidebarIcon" />
+            <i className="bi bi-gear" />
             <span className="sidebarListItemText">Configuracion</span>
           </li>
         </ul> 
         <hr className="sidebarHr" />
 
         <div className="sidebarPerfil">
-        <AccountCircle className="sidebarImage" />
+        <i className="bi bi-newspaper"/>
         <a href="./ProfilePage/Profile.jsx">Perfil</a>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
