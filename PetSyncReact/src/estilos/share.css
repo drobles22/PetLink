@@ -79,3 +79,12 @@
     cursor: pointer;
     opacity: 0.7;
   }
+
+  .shareImg {
+    width: 200px; /* Ancho fijo */
+    height: 200px; /* Alto fijo */
+    object-fit: cover; /* Mantiene el aspecto recortando el exceso */
+    border-radius: 10px; /* Bordes redondeados opcional */
+    margin-top: 10px;
+  }
+  
