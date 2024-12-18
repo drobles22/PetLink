@@ -99,21 +99,24 @@
   color: #f4bd61;
 }
 
-.loginRegisterButton {
+.loginRegisterBtn {
   height: 45px;
   border-radius: 5px;
   border: none;
-  background-color: #f4bd61;
-  color: #fff;
+  background-color: #4285f4; 
+  color: white;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.loginRegisterButton:hover {
-  background-color: #e0a94c;
-  color: white !important;
+.loginRegisterBtn:hover {
+  background-color: #357ae8
 }
 
 .googleButton {
@@ -166,10 +169,6 @@
       font-size: 14px;
   }
 
-  .loginButton,
-  .loginRegisterButton {
-      font-size: 14px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -186,10 +185,5 @@
       font-size: 16px !important;
   }
 
-  .loginButton,
-  .loginRegisterButton {
-      height: 40px;
-      font-size: 16px !important ;
-  }
 }
 

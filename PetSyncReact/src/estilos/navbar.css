@@ -4,9 +4,10 @@
   background-color: #f4bd61;
   display: flex;
   align-items: center;
-  position: sticky;
+  position: sticky; /* Change to sticky to ensure it stays on top within the main content */
   top: 0;
-  z-index: 999;
+  z-index: 1000; /* Ensure a high z-index value */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
 }
 
 .topbarLeft {
