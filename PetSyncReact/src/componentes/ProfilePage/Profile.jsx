@@ -8,10 +8,13 @@ import { useParams } from "react-router";
 import "../../estilos/modalConfig.css";
 
 export const Profile = () => {
-  const { user: currentUser } = useContext(AuthContext);
+  const { user: currentUser, dispatch  } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const [postCount, setPostCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [followed, setFollowed] = useState(
+    currentUser.followings.includes(user?.id)
+  );
 
   const [showModal, setShowModal] = useState(false); // Para mostrar/ocultar el modal
   const [formData, setFormData] = useState({
@@ -51,7 +54,7 @@ export const Profile = () => {
           descr: response.data.descr || "",
           city: response.data.city || "",
           country: response.data.country || "",
-          itsPrivate: response.data.itsPrivate || false, // Inicializar con el valor actual
+          itsPrivate: response.data.itsPrivate || false, 
         });
 
         if (currentUser.followings?.includes(response.data._id)) {
@@ -67,12 +70,13 @@ export const Profile = () => {
   const handleClick = async () => {
     try {
       if (followed) {
-        await axios.put(`api/users/${user._id}/unfollow`, {
+        await axios.put(`http://localhost:8800/api/users/${user._id}/unfollow`, {
           userId: currentUser._id,
         });
         dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
-        await axios.put(`api/users/${user._id}/follow`, {
+        console.log(user._id)
+        await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, {
           userId: currentUser._id,
         });
         dispatch({ type: "FOLLOW", payload: user._id });
@@ -146,8 +150,8 @@ export const Profile = () => {
               <h6>@{user.username}</h6>
               {user.username !== currentUser.username && (
           <button className="rightbarFollowButton" onClick={handleClick} >
-            {isFollowing ? "Unfollow" : "Follow"}
-            {isFollowing ? <i className="bi bi-x"></i> : <i className="bi bi-plus"></i>
+            {followed ? "Unfollow" : "Follow"}
+            {followed ? <i className="bi bi-x"></i> : <i className="bi bi-plus"></i>
             }
           </button>
         )}

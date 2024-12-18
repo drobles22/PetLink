@@ -5,6 +5,7 @@ import axios from "axios";
 import "../../estilos/stylesheetMainFeed.css";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
+import { Share } from "./Share";
 
 export const MainFeed = ({ username }) => {
   const [posts, setPosts] = useState([]);
@@ -36,6 +37,7 @@ export const MainFeed = ({ username }) => {
     <div className="feed">
     <div className="feedWrapper">
       {(!username || username === user.username)}
+      <Share></Share>
       {posts.map((p) => (
         <Post key={p._id} post={p} />
       ))}
