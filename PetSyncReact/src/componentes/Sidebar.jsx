@@ -8,7 +8,7 @@ import {
   Settings,
 } from '@mui/icons-material';
 
-export default function Sidebar() {
+export const Sidebar = () =>{
   return (
     <>
       <div className="sidebar">

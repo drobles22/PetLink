@@ -3,8 +3,8 @@ import { NavBar } from "../NavBar/navbar";
 import "../../estilos/stylesheetMainFeed.css"
 import { FeedDivisors } from "../MainPage/FeedDivisors";
 
-import { Sidebar } from "../Sidebar"
-import { Rightbar } from "../Rightbar"
+import { Sidebar } from "../../componentes/Sidebar"
+import { Rightbar } from "../../componentes/Rightbar"
 import { RouterApp } from "../RouterApp";
 import { BrowserRouter as  Router} from "react-router-dom";
 

@@ -2,7 +2,7 @@ import "../estilos/rightbar.css";
 import Online from "../componentes/Online";
 
 
-export default function Rightbar() {
+export const  Rightbar = () => {
   const HomeRightbar = () => {
     return (
       <>
