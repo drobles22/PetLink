@@ -7,10 +7,9 @@ form{
   margin: 10px;
 }
 .sidebar {
-  padding: 20px;
-  background-color: #f4f4f4;
-  height: calc(100vh - 50px); 
-  overflow-y: auto;
+  flex: 3;
+  height: calc(100vh - 50px);
+  overflow-y: scroll;
   position: sticky;
   top: 50px;
 }
@@ -46,7 +45,6 @@ form{
   padding: 0;
   margin: 0;
   list-style: none;
-  flex-grow: 1;
 }
 
 .sidebarListItem {
@@ -57,23 +55,6 @@ form{
 
 .sidebarIcon {
   margin-right: 15px;
-}
-
-.sidebarListItemText {
-  margin-left: 10px;
-  color: #333;
-  text-decoration: none;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-}
-
-.sidebarListItemText i {
-  margin-right: 10px;
-}
-
-.sidebarListItemText:hover {
-  color: #f4bd61;
 }
 
 .sidebarButton {
@@ -92,37 +73,6 @@ form{
   padding: 0;
   margin: 0;
   list-style: none;
-}
-
-sidebarPerfil {
-  text-align: center;
-}
-
-.topbarImg1 {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.rightbarInfo {
-  margin-top: 10px;
-}
-
-.rightbarInfoItem {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.rightbarInfoKey {
-  font-weight: bold;
-}
-
-.rightbarInfoValue {
-  font-weight: normal;
 }
 
 @media(min-width:601px) and (max-width: 900px){/*tablets*/

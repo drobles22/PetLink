@@ -1,13 +1,9 @@
 .rightbar {
-  background-color: #f4f4f4;
-  height: calc(100vh - 50px);
-  overflow-y: auto;
-  position: sticky;
-  top: 50px;
+  flex: 3.5;
 }
 
 .rightbarWrapper {
-  padding: 10px 0 0 0;
+  padding: 20px 20px 0 0;
 }
 
 .birthdayContainer {

@@ -86,20 +86,20 @@
   display: none; 
 }
 
-.loginRegisterBtn {
+.loginRegisterButton {
   height: 45px;
   border-radius: 5px;
   border: none;
-  background-color: #5cb85c; 
-  color: #fff;
-  font-size: 18px;
+  background-color: transparent;
+  color: #f4bd61;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  text-decoration: underline;
 }
 
-.loginRegisterBtn:hover {
-  background-color: #4cae4c;
+.loginRegisterButton:hover {
+  color: #e0a94c;
 }
 
 @media (max-width: 768px) {

@@ -1,18 +1,23 @@
 import { MainFeed } from "../MainPage/MainFeed";
 import { NavBar } from "../NavBar/navbar";
-import Sidebar from "../Sidebar";
-import Rightbar from "../Rightbar";
-import "../../estilos/homeContainer.css";
+import "../../estilos/stylesheetMainFeed.css"
+import { FeedDivisors } from "../MainPage/FeedDivisors";
+
+import Sidebar from "../../componentes/Sidebar";
+import { BrowserRouter as  Router} from "react-router-dom";
 
 export default function Home() {
   return (
-    <div className="homeContainer">
-      <Sidebar />
-      <div className="mainContent">
-        <NavBar />
-        <MainFeed />
+    <>      
+
+    <NavBar></NavBar>
+
+
+      <div className="homeContainer">
+       {/*<Sidebar></Sidebar>*/} 
+        
+        <MainFeed></MainFeed>
       </div>
-      <Rightbar />
-    </div>
+    </>
   );
 }

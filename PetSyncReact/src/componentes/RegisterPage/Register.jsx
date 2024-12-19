@@ -115,7 +115,7 @@ export default function Register() {
               Sign Up
             </button>
             <button
-              className="loginRegisterBtn"
+              className="loginRegisterButton"
               type="button"
               onClick={handleLoginRedirect}
             >

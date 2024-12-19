@@ -94,7 +94,10 @@ export default function Login() {
               Log In with Google
             </button>
             <span className="loginForgot">Forgot Password?</span>
-            <button className="loginRegisterBtn" type="button" onClick={() => navigate("/register")}
+            <button
+              className="loginRegisterButton"
+              type="button"
+              onClick={() => navigate("/register")}
             >
               Create a New Account
             </button>
