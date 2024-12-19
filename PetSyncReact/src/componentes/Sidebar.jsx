@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { CloseFriend } from "./CloseFriend"
 import "../estilos/sidebar.css";
 
 export default function Sidebar() {
@@ -45,12 +44,20 @@ export default function Sidebar() {
               className="topbarImg1"
             />
           </Link>
-          <hr className="sidebarHr" />
-        <ul className="sidebarFriendList">
-          {Users.map((u) => (
-            <CloseFriend key={u.id} user={u} />
-          ))}
-        </ul>
+          <div className="rightbarInfo">
+            <div className="rightbarInfoItem">
+              <span className="rightbarInfoKey">Pais:</span>
+              <span className="rightbarInfoValue">Costa Rica</span>
+            </div>
+            <div className="rightbarInfoItem">
+              <span className="rightbarInfoKey">Ciudad:</span>
+              <span className="rightbarInfoValue">San Jose</span>
+            </div>
+            <div className="rightbarInfoItem">
+              <span className="rightbarInfoKey">Estado Civil:</span>
+              <span className="rightbarInfoValue">Soltero</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
