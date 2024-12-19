@@ -1,11 +1,22 @@
 import "../estilos/rightbar.css";
 import Online from "../componentes/Online";
 import { FollowersList } from "./FollowersList/FollowersList";
-import { AuthContext } from "../context/AuthContext";
+
+const Users = [
+  {
+    id: 1,
+    profilePicture: "/path/to/profile1.jpg",
+    username: "User1",
+  },
+  {
+    id: 2,
+    profilePicture: "/path/to/profile2.jpg",
+    username: "User2",
+  },
+  // Add more users as needed
+];
 
 export default function Rightbar() {
-
-
   const HomeRightbar = () => {
     const { Users } = useContext(AuthContext); 
 
@@ -19,7 +30,7 @@ export default function Rightbar() {
         </ul>
 
         <div className="rightbarFollowings">
-          {<FollowersList/>}
+          <FollowersList />
         </div>
       </>
     );

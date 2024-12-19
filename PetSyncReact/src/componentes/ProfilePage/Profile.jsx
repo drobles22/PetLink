@@ -1,14 +1,16 @@
 import "../../estilos/profile.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { MainFeed } from "../MainPage/MainFeed";
 import { NavBar } from "../NavBar/navbar";
 import { AuthContext } from "../../context/AuthContext";
 import { useParams } from "react-router";
+import Sidebar from "../Sidebar";
+import Rightbar from "../Rightbar";
 import "../../estilos/modalConfig.css";
 
 export const Profile = () => {
-  const { user: currentUser, dispatch  } = useContext(AuthContext);
+  const { user: currentUser, dispatch } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const [postCount, setPostCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -27,7 +29,9 @@ export const Profile = () => {
   });
 
   const Username = useParams().username;
-  const PF = "/";
+  const backendUrl = "http://localhost:8800";
+  const PF = "/images/";
+  const fileInputRef = useRef(null);
 
   // Obtener post count
   useEffect(() => {
@@ -54,7 +58,7 @@ export const Profile = () => {
           descr: response.data.descr || "",
           city: response.data.city || "",
           country: response.data.country || "",
-          itsPrivate: response.data.itsPrivate || false, 
+          itsPrivate: response.data.itsPrivate || false,
         });
 
         if (currentUser.followings?.includes(response.data._id)) {
@@ -75,7 +79,7 @@ export const Profile = () => {
         });
         dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
-        console.log(user._id)
+        console.log(user._id);
         await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, {
           userId: currentUser._id,
         });
@@ -83,9 +87,9 @@ export const Profile = () => {
       }
       setFollowed(!followed);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   // Manejar el cambio de inputs en el modal
   const handleInputChange = (e) => {
@@ -115,82 +119,143 @@ export const Profile = () => {
     }
   };
 
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      const fileName = `${Username}/${Date.now()}_${file.name}`; // Prefix the filename with the username
+      formData.append("name", fileName);
+      formData.append("file", file);
+
+      try {
+        await axios.post("/api/upload", formData);
+        await axios.put(`/api/users/${currentUser._id}`, {
+          userId: currentUser._id,
+          profilePicture: fileName,
+        });
+        setUser((prev) => ({ ...prev, profilePicture: fileName }));
+      } catch (err) {
+        console.error("Error uploading file:", err);
+      }
+    }
+  };
+
   const renderProfileContent = () => {
-    if(currentUser.username === Username){
+    if (currentUser.username === Username) {
       return <MainFeed username={Username} />;
     }
-    
+
     if (formData.itsPrivate && !isFollowing) {
-      return <div>Este perfil es privado. Debes seguir a esta persona para ver su contenido.</div>;
+      return (
+        <div>
+          Este perfil es privado. Debes seguir a esta persona para ver su
+          contenido.
+        </div>
+      );
     }
 
     return <MainFeed username={Username} />;
   };
 
   return (
-    <>
-      <NavBar />
-      <div className="profile">
-        <div className="profileRight">
-          <div className="profileRightTop">
-            <div className="profileCover">
-              <img
-                className="profileCoverImg"
-                src={user.coverPic || PF + "personProfile/coverpic.png"}
-                alt=""
-              />
-              <img
-                className="profileUserImg"
-                src={user.profilePicture || PF + "personProfile/defaultUser.jpg"}
-                alt=""
-              />
-            </div>
-            <div className="profileInfo">
-              <h4 className="profileInfoName">{user.name}</h4>
-              <h6>@{user.username}</h6>
-              {user.username !== currentUser.username && (
-          <button className="rightbarFollowButton" onClick={handleClick} >
-            {followed ? "Unfollow" : "Follow"}
-            {followed ? <i className="bi bi-x"></i> : <i className="bi bi-plus"></i>
-            }
-          </button>
-        )}
-              <div className="followersContainer">
-                <div className="div followersInfo">
-                  <strong><span>{postCount}</span></strong>
-                  <span>publicaciones</span>
-                </div>
-                <div className="div followersInfo">
-                  <strong><span>{user.followers ? user.followers.length : 0}</span></strong>
-                  <span>seguidores</span>
-                </div>
-                <div className="div followersInfo">
-                  <strong><span>{user.followings ? user.followings.length : 0}</span></strong>
-                  <span>seguidos</span>
-                </div>
+    <div className="profileContainer">
+      <Sidebar />
+      <div className="mainContent">
+        <NavBar />
+        <div className="profile">
+          <div className="profileRight">
+            <div className="profileRightTop">
+              <div className="profileCover">
+                <img
+                  className="profileCoverImg"
+                  src={user.coverPic ? `${backendUrl}${PF}${user.coverPic}` : `${backendUrl}${PF}coverpic.png`}
+                  alt=""
+                  onClick={() => fileInputRef.current.click()}
+                />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept=".png,.jpg"
+                  onChange={handleFileChange}
+                />
+                <img 
+                  className="profileUserImg"
+                  src={
+                    user.profilePicture ? `${backendUrl}${PF}${user.profilePicture}` : `${backendUrl}${PF}defaultUser.jpg`
+                  }
+                  alt=""
+                  onClick={() => fileInputRef.current.click()}
+                />
               </div>
-              <span><strong>Acerca de: </strong></span>
-              <span className="profileInfoDesc">{user.descr}</span>
-              <div>
+              <div className="profileInfo">
+                <h4 className="profileInfoName">{user.name}</h4>
+                <h6>@{user.username}</h6>
+                {user.username !== currentUser.username && (
+                  <button className="rightbarFollowButton" onClick={handleClick}>
+                    {followed ? "Unfollow" : "Follow"}
+                    {followed ? (
+                      <i className="bi bi-x"></i>
+                    ) : (
+                      <i className="bi bi-plus"></i>
+                    )}
+                  </button>
+                )}
+                <div className="followersContainer">
+                  <div className="div followersInfo">
+                    <strong>
+                      <span>{postCount}</span>
+                    </strong>
+                    <span>publicaciones</span>
+                  </div>
+                  <div className="div followersInfo">
+                    <strong>
+                      <span>{user.followers ? user.followers.length : 0}</span>
+                    </strong>
+                    <span>seguidores</span>
+                  </div>
+                  <div className="div followersInfo">
+                    <strong>
+                      <span>{user.followings ? user.followings.length : 0}</span>
+                    </strong>
+                    <span>seguidos</span>
+                  </div>
+                </div>
+                <span>
+                  <strong>Acerca de: </strong>
+                </span>
+                <span className="profileInfoDesc">{user.descr}</span>
+                <div>
+                  <br />
+                  <span>
+                    <strong>Pais: </strong>
+                  </span>
+                  <span className="profileInfoDesc">{user.country}</span>
+                  <span style={{ padding: 5 }}></span>
+                  <span>
+                    <strong>Ciudad: </strong>
+                  </span>
+                  <span className="profileInfoDesc">{user.city}</span>
+                  <span className="profileInfoDesc">{currentUser.username === Username && (
+                  <button
+                    className="configButton"
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                  >
+                    <i className="bi bi-gear-fill"></i>
+                  </button>
+                )}</span>
+                </div>
                 <br />
-              <span><strong>Pais: </strong></span>
-              <span className="profileInfoDesc">{user.country}</span>
-              <span style={{padding:5}}></span>
-              <span><strong>Ciudad: </strong></span>
-              <span className="profileInfoDesc">{user.city}</span>
+                
               </div>
-              <br />
-              {currentUser.username === Username && (
-                <button className="configButton" onClick={() => {
-                  setShowModal(true);
-                } }><i className="bi bi-gear-fill"></i></button>
-              )}
             </div>
+            {renderProfileContent()}
           </div>
-          {renderProfileContent()}
         </div>
       </div>
-
+      <Rightbar />
       {/* Modal de configuraciones */}
       {showModal && (
         <div className="profile-modal">
@@ -273,6 +338,6 @@ export const Profile = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
-}
+};
