@@ -13,6 +13,7 @@ export default function Login() {
   const email = useRef();
   const password = useRef();
   const navigate = useNavigate();
+  
 
   const { user, isFetching, error, dispatch } = useContext(AuthContext);
   console.log("AuthContext values:", { user, isFetching, error, dispatch });
@@ -37,11 +38,15 @@ export default function Login() {
       const user = result.user;
       console.log("Google logged in user:", user);
       alert("Login with Google successful!");
-      navigate("/"); // Redirect to the home page or dashboard
+      navigate("/"); 
     } catch (err) {
       console.error("Error logging in with Google:", err.message);
       setError("Failed to log in with Google. Please try again.");
     }
+  };
+
+  const handleForgotPassword = () => {
+    navigate("/forgot-password"); 
   };
 
   return (
@@ -93,7 +98,7 @@ export default function Login() {
               />
               Log In with Google
             </button>
-            <span className="loginForgot">Forgot Password?</span>
+            <button onClick={handleForgotPassword}>Olvidste la contraseña</button>
             <button className="loginRegisterBtn" type="button" onClick={() => navigate("/register")}
             >
               Create a New Account

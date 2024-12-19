@@ -1,48 +1,43 @@
 import "../../estilos/ForgotPassword.css";
-import { useState } from "react";
-import { auth } from "../../componentes/config/firebase-config";
-import { sendPasswordResetEmail } from "firebase/auth";
+import { useState } from 'react';
+import axios from 'axios';
 
-export default function ForgotPassword() {
+const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const handleForgotPassword = async () => {
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+
     try {
-      await sendPasswordResetEmail(auth, email);
-      setMessage("Password reset email sent. Please check your inbox.");
-      setError("");
-    } catch (error) {
-      console.error("Error sending password reset email:", error.message);
-      setError("Failed to send password reset email. Please try again.");
-      setMessage("");
+      const response = await axios.post("http://localhost:8800/api/auth/forgot-password", {
+        email,
+      });
+
+      setMessage(response.data.message); 
+    } catch (err) {
+      setError("Hubo un error. Verifique su correo o intente más tarde."+err);
     }
   };
 
   return (
-    <div className="forgotPassword">
-      <div className="forgotPasswordWrapper">
-        <h3 className="forgotPasswordTitle">Reset Your Password</h3>
-        <p className="forgotPasswordDesc">
-          Enter your email address below to receive a password reset link.
-        </p>
-        {message && <p className="successMessage">{message}</p>}
-        {error && <p className="errorMessage">{error}</p>}
+    <div>
+      <h2>Olvidé mi contraseña</h2>
+      <form onSubmit={handleResetPassword}>
         <input
           type="email"
-          placeholder="Enter your email"
-          className="forgotPasswordInput"
+          placeholder="Ingrese su correo electrónico"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button
-          className="forgotPasswordButton"
-          onClick={handleForgotPassword}
-        >
-          Send Reset Email
-        </button>
-      </div>
+        <button type="submit">Enviar enlace de reinicio</button>
+      </form>
+
+      {message && <div>{message}</div>}
+      {error && <div>{error}</div>}
     </div>
   );
-}
+};
+
+export default ForgotPassword;

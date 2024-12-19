@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "../../estilos/UsersSearch.css";
 
 export const UsersSearch = ({ results, setSearchTerm }) => {
+  const backendUrl = "http://localhost:8800";
+  const PF = "/images/"; 
   const handleClearSearch = () => {
     setSearchTerm("");
   };
@@ -21,7 +23,9 @@ export const UsersSearch = ({ results, setSearchTerm }) => {
           onClick={handleClearSearch}
         >
           <img
-            src={user.profilePicture || "/personProfile/defaultUser.jpg"}
+            src={
+              user.profilePicture ? `${backendUrl}${PF}${user.profilePicture}` : `${backendUrl}${PF}defaultUser.jpg`
+           }
             alt={user.username}
             className="userSearchImg"
           />

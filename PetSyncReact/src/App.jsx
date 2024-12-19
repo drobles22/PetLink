@@ -12,6 +12,7 @@ import "./estilos/navbar.css";
 import '../src/estilos/stylesheetMainFeed.css';
 import { AuthContext, AuthContextProvider } from './context/AuthContext';
 import Register from './componentes/RegisterPage/Register';
+import ForgotPassword from './componentes/ForgotPassword/ForgotPassword';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             path="/register" 
             element={ <Register/> }
           />
+          <Route path="/forgot-password" element={ForgotPassword} />
         </Routes>
       </div>
     </AuthContextProvider>
