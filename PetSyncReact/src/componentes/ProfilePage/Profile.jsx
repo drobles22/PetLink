@@ -8,10 +8,14 @@ import { useParams } from "react-router";
 import "../../estilos/modalConfig.css";
 
 export const Profile = () => {
-  const { user: currentUser } = useContext(AuthContext);
+  const { user: currentUser, dispatch  } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const [postCount, setPostCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [followed, setFollowed] = useState(
+    currentUser.followings.includes(user?.id)
+  );
+
   const [showModal, setShowModal] = useState(false); // Para mostrar/ocultar el modal
   const [formData, setFormData] = useState({
     name: "",
@@ -50,7 +54,7 @@ export const Profile = () => {
           descr: response.data.descr || "",
           city: response.data.city || "",
           country: response.data.country || "",
-          itsPrivate: response.data.itsPrivate || false, // Inicializar con el valor actual
+          itsPrivate: response.data.itsPrivate || false, 
         });
 
         if (currentUser.followings?.includes(response.data._id)) {
@@ -62,6 +66,26 @@ export const Profile = () => {
     };
     fetchUser();
   }, [Username, currentUser]);
+
+  const handleClick = async () => {
+    try {
+      if (followed) {
+        await axios.put(`http://localhost:8800/api/users/${user._id}/unfollow`, {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "UNFOLLOW", payload: user._id });
+      } else {
+        console.log(user._id)
+        await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "FOLLOW", payload: user._id });
+      }
+      setFollowed(!followed);
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   // Manejar el cambio de inputs en el modal
   const handleInputChange = (e) => {
@@ -124,7 +148,13 @@ export const Profile = () => {
             <div className="profileInfo">
               <h4 className="profileInfoName">{user.name}</h4>
               <h6>@{user.username}</h6>
-              <h6>{user.country}</h6>
+              {user.username !== currentUser.username && (
+          <button className="rightbarFollowButton" onClick={handleClick} >
+            {followed ? "Unfollow" : "Follow"}
+            {followed ? <i className="bi bi-x"></i> : <i className="bi bi-plus"></i>
+            }
+          </button>
+        )}
               <div className="followersContainer">
                 <div className="div followersInfo">
                   <strong><span>{postCount}</span></strong>
