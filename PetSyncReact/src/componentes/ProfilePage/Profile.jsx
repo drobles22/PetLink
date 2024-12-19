@@ -13,16 +13,19 @@ export const Profile = () => {
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const [postCount, setPostCount] = useState(0);
-  const [followed, setFollowed] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followed, setFollowed] = useState(
+    currentUser.followings.includes(user?.id)
+  );
 
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false); // Para mostrar/ocultar el modal
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
     descr: "",
     city: "",
     country: "",
-    itsPrivate: false, 
+    itsPrivate: false, // Nuevo campo para manejar el estado privado
   });
 
   const Username = useParams().username;
@@ -57,27 +60,16 @@ export const Profile = () => {
           country: response.data.country || "",
           itsPrivate: response.data.itsPrivate || false,
         });
-        setFollowed(currentUser.followings.includes(response.data._id));
+
+        if (currentUser.followings?.includes(response.data._id)) {
+          setIsFollowing(true);
+        }
       } catch (error) {
         console.error("Error al obtener el perfil:", error);
       }
     };
     fetchUser();
-  }, [Username, currentUser.followings]);
-
-  console.log("Estado actual de followed:", followed);
-console.log("Estado de currentUser.followings:", currentUser.followings);
-console.log("Estado de user._id:", user._id);
-  
-  useEffect(() => {
-    if (user?._id) {
-      setFollowed(currentUser.followings.includes(user._id));
-    }
-  }, [user._id, currentUser.followings]);
-  
-  console.log("Estado actual de followed:", followed);
-console.log("Estado de currentUser.followings:", currentUser.followings);
-console.log("Estado de user._id:", user._id);
+  }, [Username, currentUser]);
 
   const handleClick = async () => {
     try {
@@ -85,30 +77,27 @@ console.log("Estado de user._id:", user._id);
         await axios.put(`http://localhost:8800/api/users/${user._id}/unfollow`, {
           userId: currentUser._id,
         });
-        dispatch({ type: "UNFOLLOW", res: user._id });
-        setFollowed(false);
+        dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
+        console.log(user._id);
         await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, {
           userId: currentUser._id,
         });
-        dispatch({ type: "FOLLOW", res: user._id });
-        setFollowed(true);
+        dispatch({ type: "FOLLOW", payload: user._id });
       }
+      setFollowed(!followed);
     } catch (err) {
       console.log(err);
     }
-  }
-  console.log("Estado actual de followed:", followed);
-  console.log("Estado de currentUser.followings:", currentUser.followings);
-  console.log("Estado de user._id:", user._id);
+  };
 
-  // change de inputs en el modal
+  // Manejar el cambio de inputs en el modal
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Switch de privado
+  // Manejar el cambio del switch
   const handleSwitchChange = (e) => {
     setFormData({ ...formData, itsPrivate: e.target.checked });
   };
@@ -117,13 +106,13 @@ console.log("Estado de user._id:", user._id);
   const handleUpdate = async () => {
     try {
       const updateData = {
-        userId: currentUser._id, 
+        userId: currentUser._id, // ID del usuario autenticado
         ...formData,
       };
 
       await axios.put(`/api/users/${currentUser._id}`, updateData);
       setShowModal(false);
-      setUser((prev) => ({ ...prev, ...formData })); 
+      setUser((prev) => ({ ...prev, ...formData })); // Actualizar estado local
     } catch (error) {
       console.error("Error al actualizar los datos:", error);
       alert("Error al actualizar los datos.");
@@ -134,7 +123,7 @@ console.log("Estado de user._id:", user._id);
     const file = e.target.files[0];
     if (file) {
       const formData = new FormData();
-      const fileName = `${Username}/${Date.now()}_${file.name}`; 
+      const fileName = `${Username}/${Date.now()}_${file.name}`; // Prefix the filename with the username
       formData.append("name", fileName);
       formData.append("file", file);
 
@@ -156,18 +145,14 @@ console.log("Estado de user._id:", user._id);
       return <MainFeed username={Username} />;
     }
 
-    if (formData.itsPrivate && followed==false) {
+    if (formData.itsPrivate && !isFollowing) {
       return (
         <div>
           Este perfil es privado. Debes seguir a esta persona para ver su
           contenido.
         </div>
       );
-    } else if (formData.itsPrivate && followed==true){
-      
-      return <MainFeed username={Username} />;
-
-    }else
+    }
 
     return <MainFeed username={Username} />;
   };
@@ -185,7 +170,7 @@ console.log("Estado de user._id:", user._id);
                   className="profileCoverImg"
                   src={user.coverPic ? `${backendUrl}${PF}${user.coverPic}` : `${backendUrl}${PF}coverpic.png`}
                   alt=""
-                  onClick={() => fileInputRef.current.click()}
+                  onClick={() => currentUser.username === Username && fileInputRef.current.click()}
                 />
                 <input
                   type="file"
@@ -195,12 +180,12 @@ console.log("Estado de user._id:", user._id);
                   onChange={handleFileChange}
                 />
                 <img 
-                  className="profileUserImg"
+                  className={`profileUserImg ${currentUser.username === Username ? 'clickable' : ''}`}
                   src={
                     user.profilePicture ? `${backendUrl}${PF}${user.profilePicture}` : `${backendUrl}${PF}defaultUser.jpg`
                   }
                   alt=""
-                  onClick={() => fileInputRef.current.click()}
+                  onClick={() => currentUser.username === Username && fileInputRef.current.click()}
                 />
               </div>
               <div className="profileInfo">
@@ -271,6 +256,7 @@ console.log("Estado de user._id:", user._id);
         </div>
       </div>
       <Rightbar />
+      {/* Modal de configuraciones */}
       {showModal && (
         <div className="profile-modal">
           <div className="profile-modal-content">
