@@ -4,6 +4,7 @@ import axios from "axios";
 import PropTypes from 'prop-types';
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
+import { usePopper } from 'react-popper';
 import "../../estilos/Post.css";
 import "../../estilos/modalsComents.css"
 
@@ -11,17 +12,24 @@ export const Post = ({ post }) => {
   const { user: currentUser } = useContext(AuthContext); // Usamos el user desde el contexto
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser._id));
-
   const [share, setShare] = useState(post.shares.length);
   const [IsShare, setIsShare] = useState(false);
-
   const [user, setUser] = useState({});
   const [comments, setComments] = useState([]);
   const [commentUsers , setCommentUsers] = useState({});
   const [newComment, setNewComment] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showPopover, setShowPopover] = useState(false); // State for popover visibility
+  const [referenceElement, setReferenceElement] = useState(null);
+  const [popperElement, setPopperElement] = useState(null);
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    placement: 'right-start',
+  });
+  const [editMode, setEditMode] = useState(false);
+  const [newContent, setNewContent] = useState(post.postdesc);
+  const [originalAuthorUsername, setOriginalAuthorUsername] = useState('');
   const backendUrl = "http://localhost:8800"
-  const PF = "/";
+  const PF = "/images/";
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -61,11 +69,23 @@ export const Post = ({ post }) => {
         console.error("Error fetching users for comments:", error);
       }
     };
+
+    const fetchOriginalAuthor = async () => {
+      if (post.originalAuthor) {
+        try {
+          const response = await axios.get(`/api/users?userId=${post.originalAuthor}`);
+          setOriginalAuthorUsername(response.data.username);
+        } catch (error) {
+          console.error("Error fetching original author:", error);
+        }
+      }
+    };
   
     fetchUser();
     fetchComments();
     fetchUserComentarios();
-  }, [post.userId, post._id, post.comentarios]);
+    fetchOriginalAuthor();
+  }, [post.userId, post._id, post.comentarios, post.originalAuthor]);
 
   const likeHandler = async () => {
     try {
@@ -99,7 +119,53 @@ export const Post = ({ post }) => {
       console.error("Error adding comment:", error);
     }
   };
-  
+
+  const togglePopover = () => {
+    setShowPopover(!showPopover);
+  };
+
+  const handleIconClick = () => {
+    togglePopover();
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/posts/${post._id}`, { data: { userId: currentUser._id } });
+      window.location.reload(); // Refresh the page after deleting the post
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
+  const handleUpdate = () => {
+    setEditMode(true);
+  };
+
+  const handleSave = async () => {
+    try {
+      await axios.put(`/api/posts/${post._id}`, { userId: currentUser._id, postdesc: newContent });
+      setEditMode(false);
+      window.location.reload(); // Refresh the page after updating the post
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      const newPost = {
+        userId: currentUser._id,
+        postdesc: post.postdesc,
+        attachment: post.attachment,
+        originalAuthor: post.userId, // Save original author's user ID
+      };
+      await axios.post('/api/posts', newPost);
+      window.location.reload(); // Refresh the page after sharing the post
+    } catch (error) {
+      console.error("Error sharing post:", error);
+    }
+  };
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -108,9 +174,9 @@ export const Post = ({ post }) => {
             <Link to={`/profile/${user.username}`}>
               <img
                 className="postProfileImg"
-                src={user.profilePicture !== "" && user.profilePicture !== null
-                    ? PF + `images/`+user.profilePicture
-                    : PF + "personProfile/defaultUser.jpg"
+                src={
+                  user.profilePicture
+                    ? `${backendUrl}${PF}${user.profilePicture}` : `${backendUrl}${PF}defaultUser.jpg`
                 }
                 alt=""
               />
@@ -120,11 +186,86 @@ export const Post = ({ post }) => {
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
-            <i className="bi bi-three-dots-vertical iconsSmall"></i>
+            <i
+              className={`bi bi-three-dots-vertical iconsSmall ${showPopover ? 'active' : ''}`}
+              onClick={handleIconClick}
+              ref={setReferenceElement}
+            ></i>
+            {showPopover && (
+              <div className="popover" ref={setPopperElement} style={styles.popper} {...attributes.popper}>
+                <ul>
+                  {currentUser.isAdmin && post.userId !== currentUser._id && (
+                    <>
+                      <li onClick={handleDelete}>
+                        <i className="bi bi-trash"></i>
+                        <span>Delete</span>
+                      </li>
+                      <li onClick={handleShare}>
+                        <i className="bi bi-pencil"></i>
+                        <span>Compartir</span>
+                      </li>
+                    </>
+                  )}
+                  {currentUser.isAdmin && post.userId === currentUser._id && (
+                    <>
+                      <li onClick={handleDelete}>
+                        <i className="bi bi-trash"></i>
+                        <span>Delete</span>
+                      </li>
+                      <li onClick={handleShare}>
+                        <i className="bi bi-pencil"></i>
+                        <span>Compartir</span>
+                      </li>
+                      <li onClick={handleUpdate}>
+                        <i className="bi bi-info-circle"></i>
+                        <span>Update</span>
+                      </li>
+                    </>
+                  )}
+                  {!currentUser.isAdmin && post.userId !== currentUser._id && (
+                    <li onClick={handleShare}>
+                      <i className="bi bi-pencil"></i>
+                      <span>Compartir</span>
+                    </li>
+                  )}
+                  {!currentUser.isAdmin && post.userId === currentUser._id && (
+                    <>
+                      <li onClick={handleDelete}>
+                        <i className="bi bi-trash"></i>
+                        <span>Eliminar</span>
+                      </li>
+                      <li onClick={handleShare}>
+                        <i className="bi bi-share"></i>
+                        <span>Compartir</span>
+                      </li>
+                      <li onClick={handleUpdate}>
+                        <i className="bi bi-pencil"></i>
+                        <span>Actualizar</span>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
         <div className="postCenter">
-          <span className="postText">{post?.postdesc}</span>
+          {post.originalAuthor && (
+            <span className="originalAuthor">Original author: {originalAuthorUsername}</span>
+          )}
+          {editMode ? (
+            <div>
+              <textarea
+                value={newContent}
+                onChange={(e) => setNewContent(e.target.value)}
+                rows="3"
+                className="form-control"
+              />
+              <button onClick={handleSave} className="btn btn-primary mt-2">Save</button>
+            </div>
+          ) : (
+            <span className="postText">{post?.postdesc}</span>
+          )}
           <img className="postImg" src={`${backendUrl}${post.attachment}`} alt="" />
         </div>
         <div className="postBottom">
@@ -159,7 +300,7 @@ export const Post = ({ post }) => {
                     className="commentProfileImg"
                     src={
                       commentUsers[comment.userId].profilePicture ||
-                      PF + "personProfile/defaultUser.jpg"
+                      PF + "defaultUser.jpg"
                     }
                     alt={commentUsers[comment.userId].name || "User"}
                   />
@@ -210,5 +351,6 @@ Post.propTypes = {
       })
     ).isRequired,
     createdAt: PropTypes.string.isRequired, 
+    originalAuthor: PropTypes.string, // Add this line
   }).isRequired,
 };
