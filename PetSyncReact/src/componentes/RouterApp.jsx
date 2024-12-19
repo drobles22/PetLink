@@ -18,7 +18,7 @@ function App() {
     const { user } = useContext(AuthContext);
     return (
       <Router>
-        
+        <Route path="*" Component={ NotFoud } />
         <Switch>
           <Route exact path="/">
             {user ? <Home /> : <Register />}

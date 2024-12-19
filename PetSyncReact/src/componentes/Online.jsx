@@ -1,8 +1,8 @@
 import "../estilos/online.css";
-import { AuthContext } from "../context/AuthContext";
 
 export default function Online({user}) {
-  const { user } = useContext(AuthContext); 
+  const PF = "/";
+
   return (
     <li className="rightbarFriend">
       <div className="rightbarProfileImgContainer">
