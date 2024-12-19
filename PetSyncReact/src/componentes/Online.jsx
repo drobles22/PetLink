@@ -1,6 +1,8 @@
 import "../estilos/online.css";
 
 export default function Online({user}) {
+  const PF = "/";
+
   return (
     <li className="rightbarFriend">
       <div className="rightbarProfileImgContainer">
