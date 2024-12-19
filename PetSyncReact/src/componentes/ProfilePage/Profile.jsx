@@ -13,19 +13,16 @@ export const Profile = () => {
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const [postCount, setPostCount] = useState(0);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [followed, setFollowed] = useState(
-    currentUser.followings.includes(user?.id)
-  );
+  const [followed, setFollowed] = useState(false);
 
-  const [showModal, setShowModal] = useState(false); // Para mostrar/ocultar el modal
+  const [showModal, setShowModal] = useState(false); 
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
     descr: "",
     city: "",
     country: "",
-    itsPrivate: false, // Nuevo campo para manejar el estado privado
+    itsPrivate: false, 
   });
 
   const Username = useParams().username;
@@ -60,16 +57,27 @@ export const Profile = () => {
           country: response.data.country || "",
           itsPrivate: response.data.itsPrivate || false,
         });
-
-        if (currentUser.followings?.includes(response.data._id)) {
-          setIsFollowing(true);
-        }
+        setFollowed(currentUser.followings.includes(response.data._id));
       } catch (error) {
         console.error("Error al obtener el perfil:", error);
       }
     };
     fetchUser();
-  }, [Username, currentUser]);
+  }, [Username, currentUser.followings]);
+
+  console.log("Estado actual de followed:", followed);
+console.log("Estado de currentUser.followings:", currentUser.followings);
+console.log("Estado de user._id:", user._id);
+  
+  useEffect(() => {
+    if (user?._id) {
+      setFollowed(currentUser.followings.includes(user._id));
+    }
+  }, [user._id, currentUser.followings]);
+  
+  console.log("Estado actual de followed:", followed);
+console.log("Estado de currentUser.followings:", currentUser.followings);
+console.log("Estado de user._id:", user._id);
 
   const handleClick = async () => {
     try {
@@ -77,27 +85,30 @@ export const Profile = () => {
         await axios.put(`http://localhost:8800/api/users/${user._id}/unfollow`, {
           userId: currentUser._id,
         });
-        dispatch({ type: "UNFOLLOW", payload: user._id });
+        dispatch({ type: "UNFOLLOW", res: user._id });
+        setFollowed(false);
       } else {
-        console.log(user._id);
         await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, {
           userId: currentUser._id,
         });
-        dispatch({ type: "FOLLOW", payload: user._id });
+        dispatch({ type: "FOLLOW", res: user._id });
+        setFollowed(true);
       }
-      setFollowed(!followed);
     } catch (err) {
       console.log(err);
     }
-  };
+  }
+  console.log("Estado actual de followed:", followed);
+  console.log("Estado de currentUser.followings:", currentUser.followings);
+  console.log("Estado de user._id:", user._id);
 
-  // Manejar el cambio de inputs en el modal
+  // change de inputs en el modal
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Manejar el cambio del switch
+  // Switch de privado
   const handleSwitchChange = (e) => {
     setFormData({ ...formData, itsPrivate: e.target.checked });
   };
@@ -106,13 +117,13 @@ export const Profile = () => {
   const handleUpdate = async () => {
     try {
       const updateData = {
-        userId: currentUser._id, // ID del usuario autenticado
+        userId: currentUser._id, 
         ...formData,
       };
 
       await axios.put(`/api/users/${currentUser._id}`, updateData);
       setShowModal(false);
-      setUser((prev) => ({ ...prev, ...formData })); // Actualizar estado local
+      setUser((prev) => ({ ...prev, ...formData })); 
     } catch (error) {
       console.error("Error al actualizar los datos:", error);
       alert("Error al actualizar los datos.");
@@ -123,7 +134,7 @@ export const Profile = () => {
     const file = e.target.files[0];
     if (file) {
       const formData = new FormData();
-      const fileName = `${Username}/${Date.now()}_${file.name}`; // Prefix the filename with the username
+      const fileName = `${Username}/${Date.now()}_${file.name}`; 
       formData.append("name", fileName);
       formData.append("file", file);
 
@@ -145,14 +156,18 @@ export const Profile = () => {
       return <MainFeed username={Username} />;
     }
 
-    if (formData.itsPrivate && !isFollowing) {
+    if (formData.itsPrivate && followed==false) {
       return (
         <div>
           Este perfil es privado. Debes seguir a esta persona para ver su
           contenido.
         </div>
       );
-    }
+    } else if (formData.itsPrivate && followed==true){
+      
+      return <MainFeed username={Username} />;
+
+    }else
 
     return <MainFeed username={Username} />;
   };
@@ -256,7 +271,6 @@ export const Profile = () => {
         </div>
       </div>
       <Rightbar />
-      {/* Modal de configuraciones */}
       {showModal && (
         <div className="profile-modal">
           <div className="profile-modal-content">
