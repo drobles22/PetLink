@@ -6,8 +6,9 @@ import axios from "axios";
 import { UsersSearch } from "./UsersSearch";
 
 export const NavBar = () => {
-  const { user, dispatch } = useContext(AuthContext); // Obtener el usuario y el dispatch desde el contexto
-  const PF = "/"; // Prefijo para las rutas de las imágenes
+  const { user, dispatch } = useContext(AuthContext);
+  const backendUrl = "http://localhost:8800";
+  const PF = "/images/";
   const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
   const [searchResults, setSearchResults] = useState([]); // Resultados de búsqueda
   const navigate = useNavigate(); // Hook para la navegación
@@ -61,8 +62,8 @@ export const NavBar = () => {
           <img
             src={
               user.profilePicture
-                ? PF + user.profilePicture // Si tiene imagen de perfil, usarla
-                : PF + "personProfile/defaultUser.jpg" // Si no, usar la imagen por defecto
+                ? `${backendUrl}${PF}${user.profilePicture}`
+                : `${backendUrl}${PF}defaultUser.jpg`
             }
             alt="User profile"
             className="topbarImg" // Asegúrate de que la clase CSS esté definida
@@ -72,4 +73,4 @@ export const NavBar = () => {
       </div>
     </div>
   );
-}
+};
