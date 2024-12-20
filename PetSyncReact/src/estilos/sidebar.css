@@ -14,7 +14,6 @@ form{
   background-color: #f4f4f4;
   padding: 20px;
   transition: transform 0.3s ease;
-  z-index: 1000;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
 }
 .sidebarPerfil{

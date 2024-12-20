@@ -4,14 +4,14 @@
   overflow-y: auto;
   position: sticky;
   top: 50px;
-
+  width: 500px !important;
     display: flex
 ;
     flex-direction: column;
     align-items: center;
     max-width: none !important;
 
-    width: 990px !important;
+  
 
 
 }
@@ -95,7 +95,13 @@
   object-fit: cover;
   border-radius: 5px;
 }
+@media (min-width: 1450px) and (max-width: 1900px) {
 
+  .rightbar{
+
+    width: 900px !important;
+  }
+}
 
 @media (max-width: 1024px) {
   
