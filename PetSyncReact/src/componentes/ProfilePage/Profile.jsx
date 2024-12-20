@@ -14,18 +14,16 @@ export const Profile = () => {
   const [user, setUser] = useState({});
   const [postCount, setPostCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [followed, setFollowed] = useState(
-    currentUser.followings.includes(user?.id)
-  );
+const [loading, setLoading] = useState(false);
 
-  const [showModal, setShowModal] = useState(false); // Para mostrar/ocultar el modal
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
     descr: "",
     city: "",
     country: "",
-    itsPrivate: false, // Nuevo campo para manejar el estado privado
+    itsPrivate: false,
   });
 
   const Username = useParams().username;
@@ -33,7 +31,7 @@ export const Profile = () => {
   const PF = "/images/";
   const fileInputRef = useRef(null);
 
-  // Obtener post count
+  // Obtener publicaciones
   useEffect(() => {
     const fetchPostCount = async () => {
       try {
@@ -46,7 +44,7 @@ export const Profile = () => {
     fetchPostCount();
   }, [Username]);
 
-  // Obtener perfil
+  // Obtener usuario y verificar si está seguido
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -61,9 +59,7 @@ export const Profile = () => {
           itsPrivate: response.data.itsPrivate || false,
         });
 
-        if (currentUser.followings?.includes(response.data._id)) {
-          setIsFollowing(true);
-        }
+        setIsFollowing(currentUser.followings?.includes(response.data._id));
       } catch (error) {
         console.error("Error al obtener el perfil:", error);
       }
@@ -73,46 +69,49 @@ export const Profile = () => {
 
   const handleClick = async () => {
     try {
-      if (followed) {
+      if (isFollowing) {
+      
         await axios.put(`http://localhost:8800/api/users/${user._id}/unfollow`, {
           userId: currentUser._id,
         });
-        dispatch({ type: "UNFOLLOW", payload: user._id });
+       
+        dispatch({ type: "UNFOLLOW", res: user._id });
       } else {
-        console.log(user._id);
+       
         await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, {
           userId: currentUser._id,
         });
-        dispatch({ type: "FOLLOW", payload: user._id });
+       
+        dispatch({ type: "FOLLOW", res: user._id });
       }
-      setFollowed(!followed);
+      
+    
+      setIsFollowing(prev => !prev); 
     } catch (err) {
       console.log(err);
     }
   };
+  
 
-  // Manejar el cambio de inputs en el modal
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Manejar el cambio del switch
   const handleSwitchChange = (e) => {
     setFormData({ ...formData, itsPrivate: e.target.checked });
   };
 
-  // Actualizar datos del usuario
   const handleUpdate = async () => {
     try {
       const updateData = {
-        userId: currentUser._id, // ID del usuario autenticado
+        userId: currentUser._id,
         ...formData,
       };
 
       await axios.put(`/api/users/${currentUser._id}`, updateData);
       setShowModal(false);
-      setUser((prev) => ({ ...prev, ...formData })); // Actualizar estado local
+      setUser((prev) => ({ ...prev, ...formData }));
     } catch (error) {
       console.error("Error al actualizar los datos:", error);
       alert("Error al actualizar los datos.");
@@ -123,7 +122,7 @@ export const Profile = () => {
     const file = e.target.files[0];
     if (file) {
       const formData = new FormData();
-      const fileName = `${Username}/${Date.now()}_${file.name}`; // Prefix the filename with the username
+      const fileName = `${Username}${Date.now()}_${file.name}`;
       formData.append("name", fileName);
       formData.append("file", file);
 
@@ -158,10 +157,13 @@ export const Profile = () => {
   };
 
   return (
+    
+    <>
+     <NavBar />
     <div className="profileContainer">
+      
       <Sidebar />
       <div className="mainContent">
-        <NavBar />
         <div className="profile">
           <div className="profileRight">
             <div className="profileRightTop">
@@ -179,10 +181,12 @@ export const Profile = () => {
                   accept=".png,.jpg"
                   onChange={handleFileChange}
                 />
-                <img 
-                  className={`profileUserImg ${currentUser.username === Username ? 'clickable' : ''}`}
+                <img
+                  className={`profileUserImg ${currentUser.username === Username ? "clickable" : ""}`}
                   src={
-                    user.profilePicture ? `${backendUrl}${PF}${user.profilePicture}` : `${backendUrl}${PF}defaultUser.jpg`
+                    user.profilePicture
+                      ? `${backendUrl}${PF}${user.profilePicture}`
+                      : `${backendUrl}${PF}defaultUser.jpg`
                   }
                   alt=""
                   onClick={() => currentUser.username === Username && fileInputRef.current.click()}
@@ -192,13 +196,12 @@ export const Profile = () => {
                 <h4 className="profileInfoName">{user.name}</h4>
                 <h6>@{user.username}</h6>
                 {user.username !== currentUser.username && (
-                  <button className="rightbarFollowButton" onClick={handleClick}>
-                    {followed ? "Unfollow" : "Follow"}
-                    {followed ? (
-                      <i className="bi bi-x"></i>
-                    ) : (
-                      <i className="bi bi-plus"></i>
-                    )}
+                    <button
+                    className={`follow-btn ${isFollowing ? "unfollow" : "follow"}`}
+                    onClick={handleClick}
+                    disabled={loading} 
+                  >
+                    {loading ? "Cargando..." : isFollowing ? "Unfollow" : "Follow"}
                   </button>
                 )}
                 <div className="followersContainer">
@@ -236,19 +239,20 @@ export const Profile = () => {
                     <strong>Ciudad: </strong>
                   </span>
                   <span className="profileInfoDesc">{user.city}</span>
-                  <span className="profileInfoDesc">{currentUser.username === Username && (
-                  <button
-                    className="configButton"
-                    onClick={() => {
-                      setShowModal(true);
-                    }}
-                  >
-                    <i className="bi bi-gear-fill"></i>
-                  </button>
-                )}</span>
+                  <span className="profileInfoDesc">
+                    {currentUser.username === Username && (
+                      <button
+                        className="configButton"
+                        onClick={() => {
+                          setShowModal(true);
+                        }}
+                      >
+                        <i className="bi bi-gear-fill"></i>
+                      </button>
+                    )}
+                  </span>
                 </div>
                 <br />
-                
               </div>
             </div>
             {renderProfileContent()}
@@ -256,7 +260,6 @@ export const Profile = () => {
         </div>
       </div>
       <Rightbar />
-      {/* Modal de configuraciones */}
       {showModal && (
         <div className="profile-modal">
           <div className="profile-modal-content">
@@ -284,9 +287,10 @@ export const Profile = () => {
               </div>
               <div className="profile-modal-field">
                 <label htmlFor="descr">Descripción</label>
-                <textarea
+                <input
                   id="descr"
                   name="descr"
+                  type="text"
                   value={formData.descr || ""}
                   onChange={handleInputChange}
                 />
@@ -312,32 +316,25 @@ export const Profile = () => {
                 />
               </div>
               <div className="profile-modal-field">
-                <label htmlFor="itsPrivate">Perfil privado</label>
-                <div className="form-check form-switch">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="itsPrivate"
-                    checked={formData.itsPrivate}
-                    onChange={handleSwitchChange}
-                  />
-                  <label className="form-check-label" htmlFor="itsPrivate">
-                    {formData.itsPrivate ? "Privado" : "Público"}
-                  </label>
-                </div>
-              </div>
-              <div className="ButtonWrapper">
-                <button type="button" onClick={handleUpdate}>
-                  Actualizar
-                </button>
-                <button type="button" onClick={() => setShowModal(false)}>
-                  Cerrar
-                </button>
+                <label htmlFor="itsPrivate">¿Privado?</label>
+                <input
+                  id="itsPrivate"
+                  name="itsPrivate"
+                  type="checkbox"
+                  checked={formData.itsPrivate}
+                  onChange={handleSwitchChange}
+                />
               </div>
             </form>
+            <div className="profile-modal-buttons">
+              <button onClick={handleUpdate}>Guardar</button>
+              <button onClick={() => setShowModal(false)}>Cancelar</button>
+            </div>
           </div>
         </div>
       )}
     </div>
+    </>
   );
+  
 };

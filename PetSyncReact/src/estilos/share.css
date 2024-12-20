@@ -83,10 +83,64 @@
   }
 
   .shareImg {
-    width: 200px; /* Ancho fijo */
-    height: 200px; /* Alto fijo */
-    object-fit: cover; /* Mantiene el aspecto recortando el exceso */
-    border-radius: 10px; /* Bordes redondeados opcional */
+    width: 200px; 
+    height: 200px; 
+    object-fit: cover; 
+    border-radius: 10px; 
     margin-top: 10px;
   }
 
+  button{
+
+    font-size: 18px !important;
+  }
+
+  @media (max-width: 1024px) {
+
+    .wrap{
+
+      height: 180px;
+      font-size: 20px;
+
+    }
+    .contTop{
+
+      height: 60px;
+
+    }
+
+    .OptionText {
+
+      font-size: 18px;
+    }
+
+    .shareIcon {
+
+      font-size: 25px;
+    }
+    button{
+
+      font-size: 18px !important;
+    }
+    .shareImg{
+
+      display: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+  }
+  
+  
+    @media (max-width: 480px) {
+
+      button{
+
+        font-size: 15px !important;
+      }
+      .shareInput {
+        width: 100%;
+      }
+
+    }
+  

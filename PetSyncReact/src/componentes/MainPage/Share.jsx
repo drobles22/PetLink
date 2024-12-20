@@ -12,13 +12,13 @@ export const Share = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    // Crear el nuevo post
+    
     const newPost = {
       userId: user._id,
       postdesc: desc.current.value,
     };
 
-    // Subida del archivo (imagen)
+
     if (file) {
       const data = new FormData();
       const fileName = Date.now() + file.name;
@@ -27,7 +27,7 @@ export const Share = () => {
       newPost.attachment = "/images/" + fileName;
 
       try {
-        // Subir el archivo al servidor
+   
         await axios.post("/api/upload", data);
       } catch (err) {
         console.error("Error al subir el archivo:", err);
@@ -35,17 +35,17 @@ export const Share = () => {
       }
     }
 
-    // Crear el post en la base de datos
+
     try {
       await axios.post("/api/posts", newPost);
-      window.location.reload(); // Recargar la página
+      window.location.reload(); 
     } catch (err) {
       console.error("Error al crear el post:", err);
     }
   };
 
   return (
-    <div className="container containerShare">
+    <div className=" containerShare">
       <div className="wrap">
         <div className="contTop">
           <input
@@ -55,7 +55,7 @@ export const Share = () => {
           />
         </div>
 
-        {/* Vista previa de la imagen */}
+  
         {file && (
           <div className="shareImgContainer">
             <img className="shareImg" src={URL.createObjectURL(file)} alt="preview" />
@@ -69,7 +69,7 @@ export const Share = () => {
         <hr />
         <form className="contBottom" onSubmit={submitHandler}>
           <div className="NewPostOptions">
-            {/* Input para seleccionar un archivo */}
+          
             <label htmlFor="file" className="newPostOp">
               <i className="bi bi-card-image shareIcon" style={{ color: "tomato" }}></i>
               <span className="OptionText">Imagen/Video</span>
@@ -82,7 +82,7 @@ export const Share = () => {
               />
             </label>
           </div>
-          {/* Botón para subir el post */}
+   
           <button className="btn btn-warning shareButton" type="submit">
             Subir <i className="bi bi-arrow-right" style={{ marginLeft: "5px" }}></i>
           </button>

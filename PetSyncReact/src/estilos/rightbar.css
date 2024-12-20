@@ -4,6 +4,16 @@
   overflow-y: auto;
   position: sticky;
   top: 50px;
+
+    display: flex
+;
+    flex-direction: column;
+    align-items: center;
+    max-width: none !important;
+
+    width: 990px !important;
+
+
 }
 
 .rightbarWrapper {
@@ -85,3 +95,20 @@
   object-fit: cover;
   border-radius: 5px;
 }
+
+
+@media (max-width: 1024px) {
+  
+  .rightbar{
+    display: none;
+  }
+}
+
+
+
+@media (max-width: 768px) {
+}
+
+
+  @media (max-width: 480px) {
+  }

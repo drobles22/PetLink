@@ -16,24 +16,24 @@ import ForgotPassword from './componentes/ForgotPassword/ForgotPassword';
 
 function App() {
   return (
-    <AuthContextProvider> {/* Asegúrate de envolver tu aplicación con el AuthContextProvider */}
+    <AuthContextProvider> 
       <div className="homeContainer">
         <Routes>
           {/* Ruta principal */}
           <Route path="/" element={<AuthContent />} />
           {/* Ruta del perfil */}
           <Route path="/profile/:username" element={<Profile />} />
-          {/* Ruta de login, solo si el usuario no está autenticado */}
+          {/* Ruta de login */}
           <Route 
             path="/login" 
             element={ <Login/> }
           />
-          {/* Ruta de register, solo si el usuario no está autenticado */}
+          {/* Ruta de register*/}
           <Route 
             path="/register" 
             element={ <Register/> }
           />
-          <Route path="/forgot-password" element={ForgotPassword} />
+          <Route path="/forgot-password" element={<ForgotPassword/>} />
         </Routes>
       </div>
     </AuthContextProvider>

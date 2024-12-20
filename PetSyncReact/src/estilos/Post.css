@@ -151,6 +151,7 @@
   border-radius: 5px;
   border: 1px solid #ddd;
   resize: none;
+  color: black;
 }
 
 .commentForm button {
@@ -164,6 +165,11 @@
 
 .commentForm button:hover {
   background-color: #0056b3;
+}
+
+.texttareaComment{
+
+  color: black;
 }
 .popover {
   position: absolute;
@@ -220,3 +226,49 @@
   color: grey;
   margin-top: 5px;
 }
+
+
+@media (max-width: 1024px) {
+
+  .postWrapper{
+
+    font-size: 20px;
+
+  }
+
+  .postProfileImg{
+
+    width: 52px;
+    height: 52px
+  }
+
+  .postName{
+
+    font-size: 20px;
+
+  }
+
+  .postUsername{
+
+    font-size: 15px;
+  }
+
+  .postDate{
+    font-size: 14px;
+  }
+
+  .postLikeCounter{
+
+    font-size: 16px;
+  }
+
+}
+
+@media (max-width: 768px) {
+}
+
+
+  @media (max-width: 480px) {
+
+
+  }

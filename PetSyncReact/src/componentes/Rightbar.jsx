@@ -1,41 +1,20 @@
 import "../estilos/rightbar.css";
-import Online from "../componentes/Online";
 import { FollowersList } from "./FollowersList/FollowersList";
 
-const Users = [
-  {
-    id: 1,
-    profilePicture: "/path/to/profile1.jpg",
-    username: "User1",
-  },
-  {
-    id: 2,
-    profilePicture: "/path/to/profile2.jpg",
-    username: "User2",
-  },
-  // Add more users as needed
-];
+
 
 export default function Rightbar() {
   const HomeRightbar = () => {
     return (
       <>
         <h4 className="rightbarTitle">Amigos</h4>
-        <ul className="rightbarFriendList">
-          {Users.map((u) => (
-            <Online key={u.id} user={u} />
-          ))}
-        </ul>
+
 
         <div className="rightbarFollowings">
           <FollowersList />
         </div>
       </>
     );
-  };
-
-  const ProfileRightbar = () => {
-    return <></>;
   };
 
   return (

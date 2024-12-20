@@ -23,6 +23,7 @@ a:hover {
 }
 
 body {
+  max-width: max-content !important;
   margin: 0;
   display: flex;
   place-items: center;

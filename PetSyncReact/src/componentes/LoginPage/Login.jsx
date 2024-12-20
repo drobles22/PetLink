@@ -25,7 +25,7 @@ export default function Login() {
         { email: email.current.value, password: password.current.value },
         dispatch
       );
-      navigate("/"); // Redirect to the home page after successful login
+      navigate("/"); 
     } catch (err) {
       console.error("Error during login:", err);
       setError("Failed to log in. Please try again.");
@@ -45,9 +45,9 @@ export default function Login() {
     }
   };
 
-  const handleForgotPassword = () => {
-    navigate("/forgot-password"); 
-  };
+    const handleForgotPassword = () => {
+      navigate("/forgot-password"); 
+    };
 
   return (
     <div className="login">

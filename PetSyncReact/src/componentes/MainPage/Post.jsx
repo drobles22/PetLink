@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../context/AuthContext"; // Importando el contexto
+import { AuthContext } from "../../context/AuthContext"; 
 import axios from "axios";
 import PropTypes from 'prop-types';
 import { format } from "timeago.js";
@@ -9,7 +9,7 @@ import "../../estilos/Post.css";
 import "../../estilos/modalsComents.css"
 
 export const Post = ({ post }) => {
-  const { user: currentUser } = useContext(AuthContext); // Usamos el user desde el contexto
+  const { user: currentUser } = useContext(AuthContext); 
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser._id));
   const [share, setShare] = useState(post.shares.length);
@@ -19,7 +19,7 @@ export const Post = ({ post }) => {
   const [commentUsers , setCommentUsers] = useState({});
   const [newComment, setNewComment] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [showPopover, setShowPopover] = useState(false); // State for popover visibility
+  const [showPopover, setShowPopover] = useState(false); 
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
@@ -113,8 +113,8 @@ export const Post = ({ post }) => {
         comentario: newComment,
       };
       await axios.put(`/api/posts/${post._id}/comment`, commentData);
-      setComments([...comments, commentData]); // Añadir el comentario nuevo localmente
-      setNewComment(""); // Limpiar el input
+      setComments([...comments, commentData]); 
+      setNewComment(""); 
     } catch (error) {
       console.error("Error adding comment:", error);
     }
@@ -131,7 +131,7 @@ export const Post = ({ post }) => {
   const handleDelete = async () => {
     try {
       await axios.delete(`/api/posts/${post._id}`, { data: { userId: currentUser._id } });
-      window.location.reload(); // Refresh the page after deleting the post
+      window.location.reload(); 
     } catch (error) {
       console.error("Error deleting post:", error);
     }
@@ -145,7 +145,7 @@ export const Post = ({ post }) => {
     try {
       await axios.put(`/api/posts/${post._id}`, { userId: currentUser._id, postdesc: newContent });
       setEditMode(false);
-      window.location.reload(); // Refresh the page after updating the post
+      window.location.reload(); 
     } catch (error) {
       console.error("Error updating post:", error);
     }
@@ -157,10 +157,10 @@ export const Post = ({ post }) => {
         userId: currentUser._id,
         postdesc: post.postdesc,
         attachment: post.attachment,
-        originalAuthor: post.userId, // Save original author's user ID
+        originalAuthor: post.userId, 
       };
       await axios.post('/api/posts', newPost);
-      window.location.reload(); // Refresh the page after sharing the post
+      window.location.reload(); 
     } catch (error) {
       console.error("Error sharing post:", error);
     }
@@ -284,12 +284,12 @@ export const Post = ({ post }) => {
         </div>
       </div>
 
-      {/* Modal para comentarios */}
+    
       {showModal && (
   <div className="commentModal">
     <div className="modalContent">
       <h3>Comentarios</h3>
-      {/* Mostrar comentarios */}
+   
       <div className="commentsList">
         {comments.length > 0 ? (
           comments.map((comment, index) => (
@@ -299,9 +299,11 @@ export const Post = ({ post }) => {
                   <img
                     className="commentProfileImg"
                     src={
-                      commentUsers[comment.userId].profilePicture ||
-                      PF + "defaultUser.jpg"
+                      commentUsers[comment.userId].profilePicture
+                      ? `${backendUrl}${PF}${commentUsers[comment.userId].profilePicture}`
+                      : `${backendUrl}${PF}defaultUser.jpg`
                     }
+
                     alt={commentUsers[comment.userId].name || "User"}
                   />
                   <div className="commentText">
@@ -320,8 +322,7 @@ export const Post = ({ post }) => {
   <p>No hay comentarios aún.</p>
 )}
             </div>
-            {/* Formulario para agregar un comentario */}
-            <textarea
+            <textarea className="texttareaComment"
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Escribe tu comentario..."
@@ -351,6 +352,6 @@ Post.propTypes = {
       })
     ).isRequired,
     createdAt: PropTypes.string.isRequired, 
-    originalAuthor: PropTypes.string, // Add this line
+    originalAuthor: PropTypes.string, 
   }).isRequired,
 };

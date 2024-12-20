@@ -9,34 +9,34 @@ export const NavBar = () => {
   const { user, dispatch } = useContext(AuthContext);
   const backendUrl = "http://localhost:8800";
   const PF = "/images/";
-  const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
-  const [searchResults, setSearchResults] = useState([]); // Resultados de búsqueda
-  const navigate = useNavigate(); // Hook para la navegación
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [searchResults, setSearchResults] = useState([]); 
+  const navigate = useNavigate(); 
 
-  // Función para manejar la búsqueda de usuarios
+ 
   const handleSearch = async (e) => {
     const query = e.target.value;
-    setSearchTerm(query); // Actualizar el término de búsqueda
+    setSearchTerm(query); 
 
     if (query.trim() === "") {
-      setSearchResults([]); // Limpiar resultados si el input está vacío
+      setSearchResults([]); 
       return;
     }
 
     try {
       const response = await axios.get(`/api/users/searchUsers?username=${query}`);
-      setSearchResults(response.data); // Guardar los resultados en el estado
+      setSearchResults(response.data); 
     } catch (error) {
       console.error("Error al buscar usuarios:", error);
-      setSearchResults([]); // Limpiar resultados si ocurre un error
+      setSearchResults([]); 
     }
   };
 
-  // Función para manejar el logout
+  // manejar el logout
   const handleLogout = () => {
-    dispatch({ type: "LOGOUT" }); // Despachar la acción de logout
-    localStorage.removeItem("user"); // Eliminar el usuario del local storage
-    navigate("/login"); // Navegar a la página de login
+    dispatch({ type: "LOGOUT" }); 
+    localStorage.removeItem("user"); 
+    navigate("/login"); 
   };
 
   return (
@@ -49,9 +49,8 @@ export const NavBar = () => {
             placeholder="Busca usuarios..."
             className="searchInput"
             value={searchTerm}
-            onChange={handleSearch} // Llamar a handleSearch cuando cambia el input
+            onChange={handleSearch} 
           />
-          {/* Mostrar resultados de búsqueda solo si hay resultados */}
           {searchResults.length > 0 && (
             <UsersSearch results={searchResults} setSearchTerm={setSearchTerm} />
           )}
@@ -66,10 +65,10 @@ export const NavBar = () => {
                 : `${backendUrl}${PF}defaultUser.jpg`
             }
             alt="User profile"
-            className="topbarImg" // Asegúrate de que la clase CSS esté definida
+            className="topbarImg"
           />
         </Link>
-        <i className="bi bi-box-arrow-right logoutIcon" onClick={handleLogout}></i> {/* Icono de logout */}
+        <i className="bi bi-box-arrow-right logoutIcon" onClick={handleLogout}></i>
       </div>
     </div>
   );

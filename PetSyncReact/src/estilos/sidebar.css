@@ -7,12 +7,15 @@ form{
   margin: 10px;
 }
 .sidebar {
-  padding: 20px;
-  background-color: #f4f4f4;
-  height: calc(100vh - 50px); 
-  overflow-y: auto;
   position: sticky;
-  top: 50px;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #f4f4f4;
+  padding: 20px;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
 }
 .sidebarPerfil{
   text-align: center;
@@ -125,7 +128,7 @@ sidebarPerfil {
   font-weight: normal;
 }
 
-@media(min-width:601px) and (max-width: 900px){/*tablets*/
+@media(min-width:601px) and (max-width: 900px){
   main{
       flex-direction: row;
       flex-wrap: wrap;
@@ -135,7 +138,7 @@ sidebarPerfil {
   }
 }
 
-@media(min-width:901px) and (max-width: 1200px){/*laptop*/
+@media(min-width:901px) and (max-width: 1200px){
   main{
       flex-direction: row;
       flex-wrap: nowrap;
@@ -148,3 +151,98 @@ sidebarPerfil {
   }
 }
 
+
+
+.toggleSidebarButton {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background-color: #f4bd61;
+  color: #333;
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1100;
+  display: none; 
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2); 
+}
+
+
+@media (max-width: 768px) {
+  .toggleSidebarButton {
+    display: block; 
+  }
+
+  .sidebar {
+    transform: translateX(-100%); 
+    position: absolute;
+  }
+
+  .sidebar.open {
+    transform: translateX(0); 
+  }
+}
+
+
+@media (max-width: 600px) {
+  .sidebarListItemText {
+    font-size: 16px; 
+  }
+
+  .sidebarImage {
+    width: 80px;
+    height: 80px; 
+  }
+
+  .topbarImg1 {
+    width: 40px;
+    height: 40px; 
+  }
+}
+
+
+.sidebarListItem {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.sidebarListItemText {
+  margin-left: 10px;
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.sidebarListItemText i {
+  margin-right: 10px;
+}
+
+.sidebarListItemText:hover {
+  color: #f4bd61; 
+}
+
+.sidebarHr {
+  margin: 20px 0;
+  border: none;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.sidebarPerfil {
+  text-align: center;
+  margin-top: auto;
+}
+
+.topbarImg1 {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  margin-top: 10px;
+}
